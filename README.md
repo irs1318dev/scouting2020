@@ -1,5 +1,5 @@
-# irsScouting2017
-irsScouting2017 continues to be developed by the Issaquah Robotics Society (IRS), a FIRST Robotics Competition (FRC) team (see note 1) at Issaquah High School in Issaquah, Washington.
+# Scouting2020
+This is a mirror repository of irsScouting2017, the Issaquah Robotics Society's system for scouting at FIRST robotics competitions.
 
 ## Purpose
 Scouting systems are used by FIRST robotics teams to collect detailed performance data on all robots that participate in a competition. This data is used to make strategy decisions for competition matches and to select other teams for playoff alliances.
@@ -10,9 +10,6 @@ Scouting systems are used by FIRST robotics teams to collect detailed performanc
 3. HTTP Server: The client tablets communicate with the server via Hypertext Transfer Protocol (HTTP). We use the *Cherrypy* Python module for the HTTP server.
 4. Data Anaysis: In addition to Structured Query Language (SQL), we use the *Pandas* Python package for data manipulation.
 5. Output: We use the *Bokeh* Python package to generate output charts and tables. We also use the *Xlsxwriter* Python package for exporting data to Excel spreadsheets.
-
-## Example Output
-Output data from the 2019 season is available at https://irs1318dev.github.io/scouting2019/.
 
 ### Notes
 1. FIRST stands for ***F**or **I**nspiration and **R**ecognition in **S**cience and **T**echnology*. FIRST's mission is to inspire young people to be science and technology leaders, by engaging them in exciting mentor-based programs that build engineering and technology skills, that inspire innovation, and that foster well-rounded life capabilities including self-confidence, communication, and leadership. Learn more at https://www.firstinspires.org/.
