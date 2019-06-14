@@ -96,8 +96,9 @@ public class MatchMaker {
     private void setName() {
         class Name extends Request {
             @Override
-            String name = s.get(0);
+
             public void run(List<String> s) {
+                String name = s.get(0);
                 if(nameView != null && s.size() > 0 && !s.get(0).equals("na")) {
 
                     while(name.length() > 33) {

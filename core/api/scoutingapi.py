@@ -226,9 +226,9 @@ class Scouting(object):
 
     @cherrypy.expose
     def tablet(self, status, ip=-1):
-        newtablet = server.scouting.tablet.Tablet(status.split(':')[0], status.split(':')[1], ip)
+        newtablet = core.models.tablet.Tablet(status.split(':')[0], status.split(':')[1], ip)
 
-        if self.alltablets.settablet(self.alltablets, newtablet):
+        if self.alltablets.settablet(newtablet):
             self.eventDal.set_next_match(self.eventDal.get_current_match())
 
         return self.eventDal.get_current_match()
