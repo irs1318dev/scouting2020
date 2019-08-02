@@ -17,7 +17,7 @@ To use this module:
 1. create a new empty database.
 2. Ensure the parameters in Model.connection.db_params correspond to
 the database created in step #1.
-3. Run `Server.model.setup_database.setup() in a Python console.
+3. Run `core.data_access.setup_database.setup() in a Python console.
 
 This database uses a star schema. The main table that contains the
 scouting data is the *measures* table (it's the *fact* table per
@@ -38,10 +38,8 @@ from sqlalchemy import UniqueConstraint
 import sqlalchemy as a
 
 import server.config as s_config
-import server.model
-import server.model.connection as smc
-import server.model.connection
-from server.model.upsert import upsert, upsert_rows, upsert_cols
+import core.data_access.connection as smc
+from core.data_access.upsert import upsert, upsert_rows, upsert_cols
 
 Base = declarative_base()
 
@@ -353,7 +351,7 @@ class MatchResult(Base):
 # region Functions for initializing database ===========================
 
 def create_tables():
-    Base.metadata.create_all(server.model.connection.engine)
+    Base.metadata.create_all(smc.engine)
 
 def initialize_dimension_data():
     """Loads initial dimension data into database.
@@ -450,7 +448,7 @@ def load_game_sheet(season):
     file = open(s_config.season(season, "gametasks.csv"))
     sheet = csv.reader(file)
 
-    server.model.upsert.upsert_cols("task_options", {"task_name": "na",
+    core.data_access.upsert.upsert_cols("task_options", {"task_name": "na",
                                     "type": "capability", "option_name": "na"})
 
     def _insert_into_db(actor, task, claim, auto, teleop, finish, optionString):
@@ -461,11 +459,11 @@ def load_game_sheet(season):
             "DO UPDATE "
             "SET actor=:actor, task=:task, claim=:claim, auto=:auto, "
             "teleop=:teleop, finish=:finish;")
-        conn = server.model.connection.engine.connect()
+        conn = smc.engine.connect()
         conn.execute(select, actor=actor, task=task, claim=claim, auto=auto,
                      teleop=teleop, finish=finish)
         conn.close()
-        server.model.upsert.upsert("tasks", "name", task)
+        core.data_access.upsert.upsert("tasks", "name", task)
 
         if optionString.strip():
             optionNames = optionString.split('|')

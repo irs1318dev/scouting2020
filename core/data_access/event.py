@@ -2,8 +2,8 @@ import json
 
 from sqlalchemy import text
 
-import server.model.dal as sm_dal
-from server.model.connection import engine, pool
+import core.data_access.dal as sm_dal
+from core.data_access.connection import engine, pool
 
 class EventError(Exception):
     pass
