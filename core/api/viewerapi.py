@@ -33,7 +33,6 @@ class Viewer:
         export.ExportBackup.run_backup(event.EventDal.get_current_event()[1])
         return 'Success. <a href="/view">Viewer</a>'
 
-
     @cherrypy.expose
     def updateAllGraphs(self):
         u.update_graph()
@@ -50,24 +49,24 @@ class Viewer:
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
-        mtch = '001-q'
+        match_number = '001-q'
         matches = list()
 
-        while '""' not in match.MatchDal.match_teams(mtch) and '130' not in mtch:
-            if team in cda.match.MatchDal.match_teams(mtch):
-                matches.append(mtch)
+        while '""' not in match.MatchDal.match_teams(match_number) and '130' not in match_number:
+            if team in cda.match.MatchDal.match_teams(match_number):
+                matches.append(match_number)
 
-            nextMatchNumber = int(mtch.split('-')[0]) + 1
-            mtch = "{0:0>3}-q".format(nextMatchNumber)
+            next_match_number = int(match_number.split('-')[0]) + 1
+            match_number = "{0:0>3}-q".format(next_match_number)
 
         out = ''
-        for mtch in matches:
+        for match_number in matches:
             out += '<a href="matchplan?match={M}">{M}</a> '
-            out = out.replace('{M}', mtch)
+            out = out.replace('{M}', match_number)
         print(out)
         return out
 
-# todo: make a part of the system. doesn't work because graphing.py is no longer used. To start look into SQL and talk to Akhil
+    # todo: make a part of the system. doesn't work because graphing.py is no longer used. To start look into SQL and talk to Akhil
     # previously manually added match and 6 teams to system and manually graphed the data
     # @cherrypy.expose
     # def customplan(self, red1, red2, red3, blue1, blue2, blue3):
@@ -79,10 +78,9 @@ class Viewer:
     #
     #     return out.replace('{Data}', graphing.graph_match(teams))
 
-
-    def teamsList(self, mtch):
+    def teamsList(self, match_number):
         teams = list()
-        for data in match.MatchDal.match_teams(mtch).split(','):
+        for data in match.MatchDal.match_teams(match_number).split(','):
             if 'team' in data:
                 teams.append(data.split(':')[1].split('"')[1])
         return teams
@@ -93,10 +91,12 @@ class Start:
     def index(self):
         return open(s_config.web_sites("resetView.html"))
 
+
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_port': 1318})
     conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()},
-    "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_scripts("")}}
+            "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True,
+                                                                      'tools.staticdir.dir': s_config.web_scripts("")}}
 
     cherrypy.tree.mount(Viewer(), '/view', config=conf)
     cherrypy.quickstart(Start(), '/')
