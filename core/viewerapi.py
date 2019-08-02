@@ -1,10 +1,11 @@
 import cherrypy
 from cherrypy.lib.static import serve_file
 import os.path
+import core.data_access as cda
 import server.config as s_config
 import server.scouting.export
-import server.model.event as event
-import server.model.match as match
+import core.data_access.event as event
+import core.data_access.match as match
 import server.season.s2018.viewer as graphing
 import server.view.excel as excel
 import server.scouting.export as export
@@ -29,7 +30,7 @@ class Viewer:
 
     @cherrypy.expose
     def backup(self):
-        export.ExportBackup.run_backup(server.model.event.EventDal.get_current_event()[1])
+        export.ExportBackup.run_backup(event.EventDal.get_current_event()[1])
         return 'Success. <a href="/view">Viewer</a>'
 
 
@@ -48,72 +49,40 @@ class Viewer:
         return open(s_config.web_sites("reset.html")).read()
 
     @cherrypy.expose
-    def selectionplan(self):
-        return graphing.graph_short_event()
-        #return open(s_config.web_data('eventData.html')).read() 
-
-    @cherrypy.expose
-    def eventplan(self):
-        return graphing.graph_long_event()
-        #return open(s_config.web_data('longEventData.html')).read() 
-
-    @cherrypy.expose
     def teamplan(self, team='1318'):
-        match = '001-q'
+        mtch = '001-q'
         matches = list()
 
-        while '""' not in server.model.match.MatchDal.match_teams(match) and '130' not in match:
-            if team in server.model.match.MatchDal.match_teams(match):
-                matches.append(match)
+        while '""' not in match.MatchDal.match_teams(mtch) and '130' not in mtch:
+            if team in cda.match.MatchDal.match_teams(mtch):
+                matches.append(mtch)
 
-            nextMatchNumber = int(match.split('-')[0]) + 1
-            match = "{0:0>3}-q".format(nextMatchNumber)
+            nextMatchNumber = int(mtch.split('-')[0]) + 1
+            mtch = "{0:0>3}-q".format(nextMatchNumber)
 
         out = ''
-        for match in matches:
+        for mtch in matches:
             out += '<a href="matchplan?match={M}">{M}</a> '
-            out = out.replace('{M}', match)
+            out = out.replace('{M}', mtch)
         print(out)
         return out
 
-    @cherrypy.expose
-    def matchplan(self, match):
-        nextMatch = self.teamsList(match)
-        setMatch = match
-        running = True
-        out = open(s_config.web_sites('graphing.html')).read()
-        out = out.replace('{Match}', match)
-        out = out.replace('{Schedule}', setMatch + ' : ' + str(self.teamsList(setMatch)))
-
-        while running:
-            nextMatchNumber = int(match.split('-')[0]) - 1
-            if nextMatchNumber > 0:
-                match = "{0:0>3}-q".format(nextMatchNumber)
-
-                for team in nextMatch:
-                    if team in self.teamsList(match):
-                        running = False
-                        out =  out.replace('{After}', 'Final After: ' + match + ' Updated: ' + event.EventDal.get_current_match())
-            else:
-                running = False
-                out =  out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
-
-        return out.replace('{Data}', graphing.examine_match(self.teamsList(setMatch)))
-
-    @cherrypy.expose
-    def customplan(self, red1, red2, red3, blue1, blue2, blue3):
-        out = open(s_config.web_sites('graphing.html')).read()
-        teams = [red1, red2, red3, blue1, blue2, blue3]
-        out = out.replace('{Match}', 'Custom')
-        out = out.replace('{Schedule}', str(teams))
-        out = out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
-
-        return out.replace('{Data}', graphing.graph_match(teams)) 
+# todo: make a part of the system. doesn't work because graphing.py is no longer used. To start look into SQL and talk to Akhil
+    # previously manually added match and 6 teams to system and manually graphed the data
+    # @cherrypy.expose
+    # def customplan(self, red1, red2, red3, blue1, blue2, blue3):
+    #     out = open(s_config.web_sites('graphing.html')).read()
+    #     teams = [red1, red2, red3, blue1, blue2, blue3]
+    #     out = out.replace('{Match}', 'Custom')
+    #     out = out.replace('{Schedule}', str(teams))
+    #     out = out.replace('{After}', 'Updated: ' + event.EventDal.get_current_match())
+    #
+    #     return out.replace('{Data}', graphing.graph_match(teams))
 
 
-    def teamsList(self, match):
+    def teamsList(self, mtch):
         teams = list()
-        for data in server.model.match.MatchDal.match_teams(match).split(','):
+        for data in match.MatchDal.match_teams(mtch).split(','):
             if 'team' in data:
                 teams.append(data.split(':')[1].split('"')[1])
         return teams
