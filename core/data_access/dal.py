@@ -2,7 +2,7 @@ import re
 
 import sqlalchemy
 
-import server.model.connection
+import core.data_access.connection as smc
 
 
 def build_dicts(dim_table):
@@ -19,7 +19,7 @@ def build_dicts(dim_table):
     """
     name_to_id = {}
     id_to_name = {}
-    conn = server.model.connection.engine.connect()
+    conn = smc.engine.connect()
 
     if dim_table.lower() == "task_options":
         sql = sqlalchemy.text("SELECT id, task_name||'-'||option_name "

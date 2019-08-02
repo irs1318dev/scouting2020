@@ -22,7 +22,7 @@ multiple rows of a database table.
 """
 import sqlalchemy
 
-import server.model.connection
+import core.data_access.connection as conne
 
 
 def upsert(table, col, val):
@@ -48,7 +48,7 @@ def upsert(table, col, val):
         col: Column into which value should be inserted
         val: Value to be inserted.
     """
-    conn = server.model.connection.engine.connect()
+    conn = conne.engine.connect()
     select = sqlalchemy.text(
         "INSERT INTO " + table + " (" + col + ") " +
         "VALUES (:val) "
@@ -84,7 +84,7 @@ def upsert_rows(table, col, n, template):
         n: Positive integer.
         template: Python format string that accepts up to one parameter.
     """
-    conn = server.model.connection.engine.connect()
+    conn = conne.engine.connect()
     for i in range(1, n):
         name = template.format(i)
         sql = sqlalchemy.text(
@@ -118,7 +118,7 @@ def upsert_cols(table, data):
             the dictionary value is the value that will be inserted into
             the database column.
     """
-    conn = server.model.connection.engine.connect()
+    conn = conne.engine.connect()
 
     # Build string containing column names
     col_names = ""

@@ -3,7 +3,7 @@ import warnings
 import sqlalchemy
 import sqlalchemy.exc
 
-import server.model.connection as smc
+import core.data_access.connection as smc
 
 # scouting system run at houston 2017 is version 2017.01
 def get_version():

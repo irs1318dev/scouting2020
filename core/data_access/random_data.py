@@ -5,11 +5,11 @@ import random
 import numpy.random
 import sqlalchemy
 
-import server.model.connection as sm_connection
-import server.model.dal as sm_dal
-import server.model.event as sm_event
-import server.model.match as sm_match
-import server.model.setup as sm_setup
+import core.data_access.connection as sm_connection
+import core.data_access.dal as sm_dal
+import core.data_access.event as sm_event
+import core.data_access.match as sm_match
+import core.data_access.setup as sm_setup
 
 
 def create_event(rnd_event, rnd_season, base_event, base_season):
