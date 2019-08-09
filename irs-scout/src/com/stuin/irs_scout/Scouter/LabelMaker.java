@@ -56,10 +56,10 @@ class LabelMaker {
                         pageManager.setUpdater(matchMaker);
                     }
                 }
-                new Tasks().start("/gametasks");
+                new Tasks().start("/game/gametasks");
             }
         }
-        new Layout().start("/gamelayout");
+        new Layout().start("/game/gamelayout");
     }
 
     private void pagesMake(List<String> layout) {

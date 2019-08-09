@@ -12,7 +12,7 @@ import server.scouting.export as export
 import server.season.s2019.view.updater as u
 
 
-class Viewer:
+class ViewerApi:
     def __init__(self, alone=True):
         self.alone = alone
 
@@ -98,5 +98,5 @@ if __name__ == '__main__':
             "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True,
                                                                       'tools.staticdir.dir': s_config.web_scripts("")}}
 
-    cherrypy.tree.mount(Viewer(), '/view', config=conf)
+    cherrypy.tree.mount(ViewerApi(), '/view', config=conf)
     cherrypy.quickstart(Start(), '/')
