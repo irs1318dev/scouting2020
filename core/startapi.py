@@ -1,6 +1,6 @@
 import cherrypy
 
-import server.config as s_config
+import core.config as s_config
 import core.models.tablet
 import core.api.gameapi
 import core.api.viewerapi

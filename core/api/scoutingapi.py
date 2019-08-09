@@ -55,39 +55,3 @@ class ScoutingApi(object):
         out = out.replace('{Year}', self.eventDal.get_current_event()[2])
         return out
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    """
-    Used by android.
-    """
-
-
-if __name__ == '__main__':
-    cherrypy.config.update(
-        {'server.socket_host': '0.0.0.0'})
-
-    conf = {"/web": {'tools.staticdir.on': True,
-                     'tools.staticdir.dir': c_config.web_base()}}
-
-    cherrypy.tree.mount(core.api.viewerapi.Viewer(False), '/view', config=conf)
-    cherrypy.quickstart(Scouting(), '/', config=conf)

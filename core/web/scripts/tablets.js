@@ -13,12 +13,12 @@ function processData(e) {
 	if(request.readyState == 4 && request.status == 200) { 
 		document.getElementById('tablets').innerHTML = request.responseText;
 		
-		var match = request.split('"')[1];
+		var match = request.response.split('"')[1];
 		document.body.innerHTML = document.body.innerHTML.replace('{Match}', match);
 	}
 }
 
 function setMatch() {
 	var match = document.getElementById('match').value;
-	window.location = "/match/matchcurrent?match=" + match;
+	window.location = "/tablet/matchcurrent?match=" + match;
 }

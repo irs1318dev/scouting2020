@@ -2,7 +2,7 @@ import cherrypy
 from cherrypy.lib.static import serve_file
 import os.path
 import core.data_access as cda
-import server.config as s_config
+import core.config as s_config
 import server.scouting.export
 import core.data_access.event as event
 import core.data_access.match as match
