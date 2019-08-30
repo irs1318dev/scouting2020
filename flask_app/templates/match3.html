@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %} <!-- This the code that creates the graph and displays it on the last match page -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Match Number</th>
+      {% for x in range(1, robot + 1) %}
+      	<th scope="col">Robot {{x}}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for x in range(0, ranges - 1)%}
+    <tr>
+      <th scope="row">{{x * rows}} - {{x * rows + rows}}</th>
+      {% for y in range(0, robot) %}
+      <td>{{ names[(x * robot + y) % name_num] }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+    <tr>
+    	<th scope="row">{{(ranges - 1) * rows}} - {{matches}}</th>
+    	{% for y in range(0, robot) %}
+      	<td>{{ names[(ranges - 1 * robot + y) % name_num] }}</td>
+      	{% endfor %}
+    </tr>
+  </tbody>
+</table>
+{% endblock content %}
