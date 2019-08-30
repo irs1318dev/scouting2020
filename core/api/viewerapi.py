@@ -90,13 +90,3 @@ class Start:
     @cherrypy.expose
     def index(self):
         return open(s_config.web_sites("resetView.html"))
-
-
-if __name__ == '__main__':
-    cherrypy.config.update({'server.socket_port': 1318})
-    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()},
-            "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True,
-                                                                      'tools.staticdir.dir': s_config.web_scripts("")}}
-
-    cherrypy.tree.mount(Viewer(), '/view', config=conf)
-    cherrypy.quickstart(Start(), '/')

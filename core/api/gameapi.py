@@ -1,6 +1,7 @@
 import cherrypy
 
 import server.scouting.tasks
+import server.scouting.sections
 import server.scouting.tablet
 
 
