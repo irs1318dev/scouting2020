@@ -3,9 +3,10 @@ import cherrypy
 import server.scouting.tasks
 import server.scouting.sections
 import server.scouting.tablet
+import server.scouting.sections
 
 
-class Game(object):
+class GameApi(object):
     @cherrypy.expose
     def gamelayout(self):
         """Returns pseudo-JSON string with season-specific tasks

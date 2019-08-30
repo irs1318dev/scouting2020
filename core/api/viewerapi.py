@@ -2,7 +2,7 @@ import cherrypy
 from cherrypy.lib.static import serve_file
 import os.path
 import core.data_access as cda
-import server.config as s_config
+import core.config as s_config
 import server.scouting.export
 import core.data_access.event as event
 import core.data_access.match as match
@@ -12,7 +12,7 @@ import server.scouting.export as export
 import server.season.s2019.view.updater as u
 
 
-class Viewer:
+class ViewerApi:
     def __init__(self, alone=True):
         self.alone = alone
 
@@ -90,3 +90,16 @@ class Start:
     @cherrypy.expose
     def index(self):
         return open(s_config.web_sites("resetView.html"))
+<<<<<<< HEAD
+=======
+
+
+if __name__ == '__main__':
+    cherrypy.config.update({'server.socket_port': 1318})
+    conf = {"/web": {'tools.staticdir.on': True, 'tools.staticdir.dir': s_config.web_base()},
+            "/usr/lib/python3.6/site-packages/bokeh/server/static/": {'tools.staticdir.on': True,
+                                                                      'tools.staticdir.dir': s_config.web_scripts("")}}
+
+    cherrypy.tree.mount(ViewerApi(), '/view', config=conf)
+    cherrypy.quickstart(Start(), '/')
+>>>>>>> e9f2324284aa34ef4c5d95a81b247a8e5afded1a
