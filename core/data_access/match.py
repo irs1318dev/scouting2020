@@ -51,21 +51,20 @@ class MatchDal(object):
         for row in results:
             match_teams.append(dict(row))
 
-        red = TabletMatch("red")
-        blue = TabletMatch("blue")
+        red = []
+        blue = []
 
         for line in match_teams:
             if line['alliance'] == 'red':
-                red.teamadd(line['team'], line['match'])
+                red.append(dict(team=line['team'], match=line['match']))
             if line['alliance'] == 'blue':
-                blue.teamadd(line['team'], line['match'])
+                blue.append(dict(team=line['team'], match=line['match']))
+
+        output = {"red": red, "blue": blue}
 
         # todo(stacy) Is separator ("\n") needed at end?
-        out = json.dumps(red, default=lambda o: o.__dict__,
-                         separators=(', ', ':'), sort_keys=True) + '\n'
-        out += json.dumps(blue, default=lambda o: o.__dict__,
-                          separators=(', ', ':'), sort_keys=True) + '\n'
-        return out
+
+        return output
 
     @staticmethod
     def pit_teams():

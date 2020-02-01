@@ -54,4 +54,3 @@ class ScoutingApi(object):
         out = out.replace('{Event}', self.eventDal.get_current_event()[1])
         out = out.replace('{Year}', self.eventDal.get_current_event()[2])
         return out
-

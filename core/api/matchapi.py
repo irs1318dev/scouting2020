@@ -86,7 +86,9 @@ class MatchApi(object):
         Used by android
         """
 
+
     @cherrypy.expose
+    @cherrypy.tools.json_out()
     def matchteams(self, match=-1):
         """Gets string with teams assigned to match or competition.
 
