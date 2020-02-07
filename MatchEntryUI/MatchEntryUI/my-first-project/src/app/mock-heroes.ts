@@ -15,16 +15,15 @@ export const HEROES: Hero[] = [
 ];
 
 export const MEASURES: Measure[] = [
-  { measure_id: 11, measure_type: 'ENUM', value: 0, measure_name: 'Dr Nice' },
-  { measure_id: 12, measure_type: 'ENUM', value: 0, measure_name: 'Narco' },
-  { measure_id: 13, measure_type: 'ENUM', value: 0, measure_name: 'Bombasto' },
-  { measure_id: 14, measure_type: 'ENUM', value: 0, measure_name: 'Celeritas' },
-  { measure_id: 15, measure_type: 'INT', value: 0, measure_name: 'Magneta' },
-  { measure_id: 16, measure_type: 'INT', value: 0, measure_name: 'RubberMan' },
-  { measure_id: 17, measure_type: 'INT', value: 0, measure_name: 'Dynama' },
-  { measure_id: 18, measure_type: '', value: 0, measure_name: 'Dr IQ' },
-  { measure_id: 19, measure_type: '', value: 0, measure_name: 'Magma' },
-  { measure_id: 20, measure_type: '', value: 0, measure_name: 'Tornado' }
+  { measure_id: 11, measure_type: 'ENUM', value: 0, measure_name: 'Starting' },
+  { measure_id: 12, measure_type: 'BOOL', value: 0, measure_name: 'Moved IL' },
+  { measure_id: 13, measure_type: 'BOOL', value: 0, measure_name: 'Crossed OS' },
+  { measure_id: 14, measure_type: 'BOOL', value: 0, measure_name: 'Collided' },
+  { measure_id: 15, measure_type: 'COUNT', value: 0, measure_name: 'Trench' },
+  { measure_id: 16, measure_type: 'COUNT', value: 0, measure_name: 'Shiled' },
+  { measure_id: 17, measure_type: 'COUNT', value: 0, measure_name: 'Shoot Outer' },
+  { measure_id: 18, measure_type: 'COUNT', value: 0, measure_name: 'Shoot Lower' },
+  { measure_id: 19, measure_type: 'BOOL', value: 0, measure_name: 'Shoot Inner' },
 ];
 
 export const MEASURES2: {[key: string]: Measure } = {

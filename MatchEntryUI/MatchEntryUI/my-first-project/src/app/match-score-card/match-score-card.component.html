@@ -1,8 +1,15 @@
 <h2>My Mesures</h2>
 <div class="container">
   <div class="row" >
-    <div class="col-sm-4 col-md-2" *ngFor="let measure of measures">
-      <app-measure [measure]="measure"></app-measure>
+    <div class="col-sm-4">
+      <app-measure [measure]="getMeasure('Starting')"></app-measure>
+      <app-measure [measure]="getMeasure('Crossed OS')"></app-measure>    
+      <app-measure [measure]="getMeasure('Moved IL')"></app-measure>  
+      <app-measure [measure]="getMeasure('Collided')"></app-measure> 
     </div>
-</div>
+    <div  class="col-sm-4">
+    </div>
+  </div>
+  
+  <button (click)="resetMeasures()">Reset</button>
 </div>

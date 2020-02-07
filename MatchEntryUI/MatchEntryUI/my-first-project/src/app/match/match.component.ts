@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeroService } from '../hero.service';
+import { RedVBlue } from '../models/redVblue';
+import { MatchService } from '../match.service';
 
 @Component({
   selector: 'app-match',
@@ -8,9 +10,17 @@ import { HeroService } from '../hero.service';
 })
 export class MatchComponent implements OnInit {
 
-  constructor() { }
+  redvBlue: RedVBlue;
+  match: string;
+
+  constructor(private matchService: MatchService) { }
 
   ngOnInit() {
+    this.getRedVBlue();
   }
 
+  getRedVBlue(): void {
+    this.matchService.getRedVBlue(this.match)
+        .subscribe(heroes => this.redvBlue = heroes);
+  }
 }

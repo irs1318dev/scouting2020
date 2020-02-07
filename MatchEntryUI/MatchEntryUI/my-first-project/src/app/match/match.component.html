@@ -1,1 +1,27 @@
-<p>match works!</p>
+
+ <div>
+    <label>matchNumber:
+    <input [(ngModel)]="match" placeholder="measure_name"/>
+    </label>
+    <button (click)="getRedVBlue()">Get Match</button>
+</div>
+<div *ngIf="redvBlue">
+    <p>Red</p>
+    <ul>
+    <li *ngFor="let red of redvBlue.red">
+        <a routerLink="/team/{{red.team}}">
+        <span class="badge">{{red.team}}</span> {{red.team}}
+        </a>
+    </li>
+    </ul>
+</div>
+<div *ngIf="redvBlue">
+    <p>Blue</p>
+    <ul>
+    <li *ngFor="let blue of redvBlue.blue">
+        <a routerLink="/team/{{blue.team}}">
+        <span class="badge">{{blue.team}}</span> {{blue.team}}
+        </a>
+    </li>
+    </ul>
+</div>

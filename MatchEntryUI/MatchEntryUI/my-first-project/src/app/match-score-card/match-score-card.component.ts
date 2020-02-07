@@ -26,4 +26,12 @@ export class MatchScoreCardComponent implements OnInit {
     this.heroService.getBlankMeasures()
         .subscribe(measures => this.measures = measures);
   }
+
+  resetMeasures(): void {    
+    this.heroService.resetMeasures();
+  }
+
+  getMeasure(measureName:string): Measure{
+    return this.measures.find(c => c.measure_name == measureName);
+  }
 }

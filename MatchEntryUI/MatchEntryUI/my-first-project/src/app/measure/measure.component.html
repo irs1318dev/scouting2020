@@ -1,39 +1,25 @@
 <div  *ngIf="measure">
     <div *ngIf="measure.measure_type === 'ENUM'">
-        <div><span>{{measure.measure_name | uppercase}} INT id: </span>{{measure.measure_id}}</div>
+        <div>{{measure.measure_name | uppercase}}</div>
         <div>
             <select [(ngModel)]="measure.value" convert-to-number>
-                <option value="0">Zero</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+                <option value="0">Load</option>
+                <option value="1">Center</option>
+                <option value="2">Goal</option>
             </select>
-            <label>value:
-            <input [(ngModel)]="measure.value" placeholder="value"/>
-            </label>
         </div>
     </div>
-    <div *ngIf="measure.measure_type === 'INT'">
-        <div><span>{{measure.measure_name | uppercase}} INT id: </span>{{measure.measure_id}}</div>
+    <div *ngIf="measure.measure_type === 'COUNT'">
+        <div>{{measure.measure_name}}</div>
         <div>
-            <label>name:
-            <input [(ngModel)]="measure.measure_name" placeholder="measure_name"/>
-            </label>
-            <label>value:
-            <input [(ngModel)]="measure.value" placeholder="value"/>
             <button (click)="increment()">+1</button>
-            <button (click)="decrement()">-1</button>
-            </label>
+            <button (click)="decrement()">-1</button>            
         </div>
     </div>
-    <div *ngIf="measure.measure_type === ''">
-        <div><span>{{measure.measure_name | uppercase}} None id: </span>{{measure.measure_id}}</div>
+    <div *ngIf="measure.measure_type === 'BOOL'">
+        <div>{{measure.measure_name}} </div>
         <div>
-            <label>name:
-            <input [(ngModel)]="measure.measure_name" placeholder="measure_name"/>
-            </label>
-            <label>value:
-            <input [(ngModel)]="measure.value" placeholder="value"/>
-            </label>
+            <input type="checkbox" [(ngModel)]="measure.value" placeholder="value"/>
         </div>
     </div>
 </div>

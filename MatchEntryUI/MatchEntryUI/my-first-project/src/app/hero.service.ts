@@ -85,6 +85,11 @@ export class HeroService {
     }
   }
 
+  public resetMeasures() {
+    this.measures = MEASURES;
+    this.saveMeasures();
+  }
+
   getMeasure(id: number): Observable<Measure> {
     // TODO: send the message _after_ fetching the hero
     this.messageService.add(`HeroService: fetched measure id=${id}`);
