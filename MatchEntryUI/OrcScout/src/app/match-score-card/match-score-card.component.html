@@ -1,0 +1,22 @@
+<h2>My Mesures</h2>
+<div class="container" style="width:100%;">
+  <div class="row" >
+    <div class="col-sm-3">
+      <app-measure [measure]="getMeasure('Starting')"></app-measure>
+      <app-measure [measure]="getMeasure('Crossed OS')"></app-measure>    
+      <app-measure [measure]="getMeasure('Moved IL')"></app-measure>  
+      <app-measure [measure]="getMeasure('Collided')"></app-measure> 
+    </div>
+    <div  class="col-sm-3">
+      <app-measure [measure]="getMeasure('Trench')"></app-measure>
+      <app-measure [measure]="getMeasure('Shield')"></app-measure>
+    </div>
+    <div  class="col-sm-6">
+      <app-measure [measure]="getMeasure('Shoot Outer')"></app-measure>
+      <app-measure [measure]="getMeasure('Shoot Lower')"></app-measure>
+      <app-measure [measure]="getMeasure('Shoot Inner')"></app-measure>
+    </div>
+  </div>
+  
+  <button (click)="resetMeasures()">Reset</button>
+</div>
