@@ -1,3 +1,16 @@
+"""Bokeh Server Demonstration
+Stacy Irwin, 9 Feb 2020
+
+A simple demonstration of dynamically charted scouting data useing
+a Bokeh Server.
+
+To run this demo:
+1. Save this file and the 'test_evt2.pickle' file in the same folder.
+2. Run this line from a PowerShell or Terminal prompt in that folder:
+
+bokeh server --show bokeh_server_demo.py
+"""
+
 import pickle
 
 import bokeh.io as bkio
