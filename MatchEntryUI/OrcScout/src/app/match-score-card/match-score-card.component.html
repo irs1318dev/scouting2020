@@ -1,0 +1,31 @@
+<div>team {{matchScoreCard.selectedTeam.name}}</div>
+<div>alliance {{matchScoreCard.selectedTeam.alliance}}</div>
+<div>station {{matchScoreCard.selectedTeam.station}}</div>
+
+<mat-horizontal-stepper linear="true" #stepper>
+  <mat-step>
+      <ng-template matStepLabel>Auto</ng-template>
+      <div>
+          <button mat-button matStepperNext>Next</button>
+      </div>
+      <app-phase-auto [measures]=" matchScoreCard.score">
+      </app-phase-auto>
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>Teleop</ng-template>
+      <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+      </div>
+      <!-- Insert a teleop component here -->
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>EndGame</ng-template>
+      <div>
+          <button mat-button matStepperPrevious>Back</button>
+      </div>
+      <!-- Insert a endGame component here -->
+  </mat-step>
+</mat-horizontal-stepper>
+
+<button (click)="resetMeasures()">Reset</button>

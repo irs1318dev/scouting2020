@@ -48,7 +48,7 @@ public class Updater {
         @Override
         public void onFinish() {
             //Get current page and match
-            String s = "/tablet?status=" + status.getText().toString().replace(" ", "") + ip;
+            String s = "/tablet/tablet?status=" + status.getText().toString().replace(" ", "") + ip;
             ip = "";
             class Status extends Request {
                 @Override
@@ -77,7 +77,7 @@ public class Updater {
                 Measure measure = measures.get(0);
 
                 //Make string of data
-                String s = "/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
+                String s = "/match/matchteamtask?match=" + measure.match + "&team=" + measure.team + "&task=" + measure.task + "&phase=" + measure.phase;
                 if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
                 if(measure.successes != 0) s += "&success=" + measure.successes;
                 if(measure.attempts != 0) s += "&attempt=" + measure.attempts;

@@ -5,11 +5,11 @@ import sqlalchemy
 
 from sqlalchemy import text
 
-import server.model.event as sm_event
-import server.model.firstapi as api
-import server.model.connection as smc
-import server.model.upsert as smu
-import server.model.firstapi as smf
+import core.data_access.event as sm_event
+import core.data_access.firstapi as api
+import core.data_access.connection as smc
+import core.data_access.upsert as smu
+import core.data_access.firstapi as smf
 
 
 def insert_sched(event, season, level='qual', fileName = '-1'):

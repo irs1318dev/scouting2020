@@ -62,16 +62,16 @@ public class MatchMaker {
                 }
 
                 //Format request for each team
-                if(!MainActivity.alliance) new Set().start("/matchteamtasks?team=" + match.getTeam(MainActivity.position));
+                if(!MainActivity.alliance) new Set().start("/match/matchteamtasks?team=" + match.getTeam(MainActivity.position));
                 else {
-                    new Set().start("/matchteamtasks?team=" + match.getTeam("1"));
+                    new Set().start("/match/matchteamtasks?team=" + match.getTeam("1"));
                     nextTeams = new ArrayDeque<>();
-                    nextTeams.add("/matchteamtasks?team=" + match.getTeam("2"));
-                    nextTeams.add("/matchteamtasks?team=" + match.getTeam("3"));
+                    nextTeams.add("/match/matchteamtasks?team=" + match.getTeam("2"));
+                    nextTeams.add("/match/matchteamtasks?team=" + match.getTeam("3"));
                 }
             }
         }
-        new Data().start("/matchteams");
+        new Data().start("/match/matchteams");
     }
 
     void setMatch() {
@@ -96,8 +96,9 @@ public class MatchMaker {
     private void setName() {
         class Name extends Request {
             @Override
-            String name = s.get(0);
+
             public void run(List<String> s) {
+                String name = s.get(0);
                 if(nameView != null && s.size() > 0 && !s.get(0).equals("na")) {
 
                     while(name.length() > 33) {
@@ -113,7 +114,7 @@ public class MatchMaker {
             }
         }
         if(!MainActivity.alliance)
-            new Name().start("/teamname?team=" + match.getTeam(MainActivity.position));
+            new Name().start("/team/teamname?team=" + match.getTeam(MainActivity.position));
     }
 
     static void update(Measure measure) {
