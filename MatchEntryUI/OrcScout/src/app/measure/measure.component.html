@@ -1,8 +1,8 @@
 <div  *ngIf="measure">
     <div *ngIf="measure.measure_type === 'ENUM'">
-        <div>{{measure.measure_name | uppercase}}</div>
+        <div>{{measure.measure_name | uppercase}} {{measure.value}}</div>
         <div>
-            <select [(ngModel)]="measure.value" convert-to-number>
+            <select [(ngModel)]="measure.attempts" convert-to-number>
                 <option value="0">Load</option>
                 <option value="1">Center</option>
                 <option value="2">Goal</option>
@@ -10,16 +10,21 @@
         </div>
     </div>
     <div *ngIf="measure.measure_type === 'COUNT'">
-        <div>{{measure.measure_name}}</div>
-        <div>
-            <button (click)="increment()">+1</button>
-            <button (click)="decrement()">-1</button>            
-        </div>
+        <div class="button-header">{{measure.measure_name}} {{measure.attempts}}/{{measure.successes}}</div>
+        <button mat-raised-button color="primary" (click)="hit()">hit</button>
+        <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
+        
+        <button mat-raised-button color="accent" (click)="miss()">miss</button>
+        <button mat-stroked-button color="basic" (click)="undoMiss()">undo</button>                         
     </div>
     <div *ngIf="measure.measure_type === 'BOOL'">
-        <div>{{measure.measure_name}} </div>
         <div>
-            <input type="checkbox" [(ngModel)]="measure.value" placeholder="value"/>
+            <mat-slide-toggle
+                class="example-margin"
+                [(ngModel)]="measure.attempts"
+                color="primary"
+                convert-to-number>{{measure.measure_name}} 
+            </mat-slide-toggle>
         </div>
     </div>
 </div>

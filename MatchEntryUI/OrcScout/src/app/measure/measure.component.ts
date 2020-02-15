@@ -18,12 +18,22 @@ export class MeasureComponent implements OnInit {
     this.heroService.getMeasure(this.measure.measure_id).subscribe(measure => this.measure = measure);
   }
 
-  public increment() {    
-    this.measure.value = this.measure.value + 1;
+  public hit() {    
+    this.measure.attempts = this.measure.attempts + 1;
+    this.measure.successes = this.measure.successes + 1;
   }
   
-  public decrement() {
-    this.measure.value = this.measure.value - 1;
+  public undoHit() {    
+    this.measure.attempts = this.measure.attempts - 1;
+    this.measure.successes = this.measure.successes - 1;
+  }
+  
+  public miss() {
+    this.measure.attempts = this.measure.attempts + 1;
+  }
+  
+  public undoMiss() {
+    this.measure.attempts = this.measure.attempts - 1;
   }
 
 }

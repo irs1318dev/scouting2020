@@ -18,7 +18,8 @@ export class MatchScoreCard {
 
 export class Measure {
     measure_id: number;
-    value: number;
+    attempts: number;
+    successes: number;
     measure_name: string;
     measure_type: string;
 }

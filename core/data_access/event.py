@@ -15,7 +15,7 @@ class EventDal(object):
     # def list_events():
     #     events = []
     #     sql = text("SELECT distinct event_id FROM schedules ORDER BY event_id ")
-    #     conn = engine.connect()
+    #     conn = engine.connect()list_matches
     #     results = conn.execute(sql)
     #     conn.close()
     #     for row in results:

@@ -4,6 +4,10 @@ import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-match-score-card',
+  host: {
+    class:'fuller-page',
+    style: 'width:100%'
+  },
   templateUrl: './match-score-card.component.html',
   styleUrls: ['./match-score-card.component.less']
 })
