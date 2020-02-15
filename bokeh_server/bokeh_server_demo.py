@@ -122,5 +122,5 @@ task_dropdown = bkwidgets.Dropdown(menu=sdata.get_task_list())
 task_dropdown.on_click(dropdown_update)
 
 # Add the plot and the dropdown box to the current webpage.
-bkplotting.curdoc().add_root(bklayouts.column(task_dropdown, plot))
+bkplotting.curdoc().add_root(bklayouts.row(task_dropdown, plot))
 
