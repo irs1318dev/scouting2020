@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Measure } from '../match';
 import { HeroService } from '../hero.service';
+import { EnumOption, ENUMOPTIONS } from '../enum-lookups';
 
 @Component({
   selector: 'app-measure',
@@ -11,11 +12,14 @@ import { HeroService } from '../hero.service';
 export class MeasureComponent implements OnInit {
   @Input() 
   measure: Measure;
+  
+  options: EnumOption[];
 
   constructor(private heroService: HeroService) { }
 
   ngOnInit() {
     this.heroService.getMeasure(this.measure.measure_id).subscribe(measure => this.measure = measure);
+    this.options = ENUMOPTIONS[this.measure.measure_name];
   }
 
   public hit() {    

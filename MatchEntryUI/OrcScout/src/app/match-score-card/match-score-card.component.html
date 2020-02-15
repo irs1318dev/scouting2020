@@ -1,54 +1,27 @@
-
-
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <div class="container" style="width:100%;">
-      <div class="row" >
-        <div class="col-sm-4">          
-          <mat-card class="example-card">
-              <mat-card-header>
-                <mat-card-title>Positions</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                  <app-measure [measure]="getMeasure('Starting')"></app-measure>
-                  <app-measure [measure]="getMeasure('Crossed OS')"></app-measure>    
-                  <app-measure [measure]="getMeasure('Moved IL')"></app-measure>  
-                  <app-measure [measure]="getMeasure('Collided')"></app-measure> 
-              </mat-card-content>
-            </mat-card>
-        </div>
-        <div  class="col-sm-4">
-          <mat-card class="example-card">
-              <mat-card-header>
-                <mat-card-title>Mid Game</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                  <app-measure [measure]="getMeasure('Trench')"></app-measure>
-                  <app-measure [measure]="getMeasure('Shield')"></app-measure>
-              </mat-card-content>
-            </mat-card>
-        </div>
-        <div  class="col-sm-4">
-            <mat-card class="example-card">
-                <mat-card-header>
-                  <mat-card-title>Shots Taken</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <app-measure [measure]="getMeasure('Shoot Outer')"></app-measure>
-                    <app-measure [measure]="getMeasure('Shoot Lower')"></app-measure>
-                    <app-measure [measure]="getMeasure('Shoot Inner')"></app-measure>
-                </mat-card-content>
-              </mat-card>
-        </div>
+<mat-horizontal-stepper linear="true" #stepper>
+  <mat-step>
+      <ng-template matStepLabel>Auto</ng-template>
+      <app-phase-auto [measures]="measures">
+      </app-phase-auto>
+      <div>
+          <button mat-button matStepperNext>Next</button>
       </div>
-      
-      <button (click)="resetMeasures()">Reset</button>
-    </div>
   </mat-step>
   <mat-step>
-
+      <ng-template matStepLabel>Teleop</ng-template>
+      <!-- Insert a teleop component here -->
+      <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+      </div>
   </mat-step>
   <mat-step>
-    
+      <ng-template matStepLabel>EndGame</ng-template>
+      <!-- Insert a endGame component here -->
+      <div>
+          <button mat-button matStepperPrevious>Back</button>
+      </div>
   </mat-step>
 </mat-horizontal-stepper>
+
+<button (click)="resetMeasures()">Reset</button>

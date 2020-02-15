@@ -1,16 +1,16 @@
 <div  *ngIf="measure">
     <div *ngIf="measure.measure_type === 'ENUM'">
-        <div>{{measure.measure_name | uppercase}} {{measure.value}}</div>
-        <div>
-            <select [(ngModel)]="measure.attempts" convert-to-number>
-                <option value="0">Load</option>
-                <option value="1">Center</option>
-                <option value="2">Goal</option>
-            </select>
-        </div>
+        <mat-form-field>
+            <mat-label>{{measure.measure_name}} </mat-label>
+            <mat-select [(ngModel)]="measure.attempts" >
+                <mat-option *ngFor="let option of options" [value]="option.value" convert-to-number>
+                    {{option.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <div *ngIf="measure.measure_type === 'COUNT'">
-        <div class="button-header">{{measure.measure_name}} {{measure.attempts}}/{{measure.successes}}</div>
+        <div class="button-header">{{measure.measure_name}} {{measure.successes}}/{{measure.attempts}}</div>
         <button mat-raised-button color="primary" (click)="hit()">hit</button>
         <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
         

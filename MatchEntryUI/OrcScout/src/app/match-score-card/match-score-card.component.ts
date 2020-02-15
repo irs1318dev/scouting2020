@@ -34,8 +34,4 @@ export class MatchScoreCardComponent implements OnInit {
   resetMeasures(): void {    
     this.heroService.resetMeasures();
   }
-
-  getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.measure_name == measureName);
-  }
 }

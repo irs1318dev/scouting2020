@@ -13,6 +13,7 @@ import { MatchComponent } from './match/match.component';
 import { MeasureComponent } from './measure/measure.component';
 import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PhaseAutoComponent } from './phase-auto/phase-auto.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,7 +35,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     DashboardComponent,
     MatchComponent,
     MeasureComponent,
-    MatchScoreCardComponent
+    MatchScoreCardComponent,
+    PhaseAutoComponent
   ],
   imports: [
     BrowserModule,
