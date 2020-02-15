@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Measure } from '../match';
+import { Measure, MatchScoreCard, Team, alliances, stations } from '../match';
 import { HeroService } from '../hero.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { HeroService } from '../hero.service';
 })
 export class MatchScoreCardComponent implements OnInit {
 
-  measures: Measure[];
+  matchScoreCard: MatchScoreCard;
   constructor(private heroService: HeroService) { }
 
   
@@ -23,12 +23,17 @@ export class MatchScoreCardComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.matchScoreCard = new MatchScoreCard();
+    this.matchScoreCard.selectedTeam = new Team();
+    this.matchScoreCard.selectedTeam.name = "test team";
+    this.matchScoreCard.selectedTeam.alliance = alliances.blue; 
+    this.matchScoreCard.selectedTeam.station = stations.one; 
     this.getMeasures();
   }
 
   getMeasures(): void {
     this.heroService.getBlankMeasures()
-        .subscribe(measures => this.measures = measures);
+        .subscribe(measures => this.matchScoreCard.score = measures);
   }
 
   resetMeasures(): void {    

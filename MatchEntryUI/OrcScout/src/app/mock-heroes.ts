@@ -21,7 +21,7 @@ export const MEASURES: Measure[] = [
   { measure_id: 14, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Collided' },
   { measure_id: 15, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Trench' },
   { measure_id: 16, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Shield' },
-  { measure_id: 17, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Shoot Outer' },
-  { measure_id: 18, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Shoot Lower' },
+  { measure_id: 17, measure_type: 'SCORE', attempts: 0, successes: 0, measure_name: 'Shoot Outer' },
+  { measure_id: 18, measure_type: 'SCORE', attempts: 0, successes: 0, measure_name: 'Shoot Lower' },
   { measure_id: 19, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Shoot Inner' },
 ];

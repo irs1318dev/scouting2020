@@ -9,13 +9,18 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div *ngIf="measure.measure_type === 'COUNT'">
+    <div *ngIf="measure.measure_type === 'SCORE'">
         <div class="button-header">{{measure.measure_name}} {{measure.successes}}/{{measure.attempts}}</div>
         <button mat-raised-button color="primary" (click)="hit()">hit</button>
         <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
         
         <button mat-raised-button color="accent" (click)="miss()">miss</button>
         <button mat-stroked-button color="basic" (click)="undoMiss()">undo</button>                         
+    </div>
+    <div *ngIf="measure.measure_type === 'COUNT'">
+        <div class="button-header">{{measure.measure_name}} {{measure.successes}}</div>
+        <button mat-raised-button color="primary" (click)="hit()">hit</button>
+        <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
     </div>
     <div *ngIf="measure.measure_type === 'BOOL'">
         <div>
