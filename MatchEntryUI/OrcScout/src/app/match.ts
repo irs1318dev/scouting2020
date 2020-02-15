@@ -1,15 +1,7 @@
-export enum alliances {
-    na = 1,
-    blue = 2,
-    red = 3
-}
-
-export enum stations {
-    na = 1,
-    one = 2,
-    two = 3,
-    three = 4
-}
+import { alliances } from './domain-tables/alliances';
+import { stations } from './domain-tables/stations';
+import { actors } from './domain-tables/actors';
+import { phases } from './domain-tables/phases';
 
 export class Match {
     id: number;
@@ -31,9 +23,12 @@ export class MatchScoreCard {
 }
 
 export class Measure {
-    measure_id: number;
+    id: number;
     attempts: number;
     successes: number;
-    measure_name: string;
-    measure_type: string;
+    task_name: string;
+    type: string;
+    task_id: number;
+    actor: actors;
+    phase: phases;
 }

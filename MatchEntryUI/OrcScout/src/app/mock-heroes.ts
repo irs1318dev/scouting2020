@@ -1,5 +1,7 @@
 import { Hero } from './hero';
 import { Measure } from './match';
+import { actors } from './domain-tables/actors';
+import { phases } from './domain-tables/phases';
 
 export const HEROES: Hero[] = [
   { id: 11, name: 'Dr Nice' },
@@ -15,13 +17,13 @@ export const HEROES: Hero[] = [
 ];
 
 export const MEASURES: Measure[] = [
-  { measure_id: 11, measure_type: 'ENUM', attempts: 0, successes: 0, measure_name: 'Starting' },
-  { measure_id: 12, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Moved IL' },
-  { measure_id: 13, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Crossed OS' },
-  { measure_id: 14, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Collided' },
-  { measure_id: 15, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Trench' },
-  { measure_id: 16, measure_type: 'COUNT', attempts: 0, successes: 0, measure_name: 'Shield' },
-  { measure_id: 17, measure_type: 'SCORE', attempts: 0, successes: 0, measure_name: 'Shoot Outer' },
-  { measure_id: 18, measure_type: 'SCORE', attempts: 0, successes: 0, measure_name: 'Shoot Lower' },
-  { measure_id: 19, measure_type: 'BOOL', attempts: 0, successes: 0, measure_name: 'Shoot Inner' },
+  { id: 11, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Starting' },
+  { id: 12, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Moved IL' },
+  { id: 13, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Crossed OS' },
+  { id: 14, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Collided' },
+  { id: 15, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Trench' },
+  { id: 16, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shield' },
+  { id: 17, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Outer' },
+  { id: 18, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Lower' },
+  { id: 19, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Inner' },
 ];

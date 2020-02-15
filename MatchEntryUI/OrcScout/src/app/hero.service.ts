@@ -94,7 +94,7 @@ export class HeroService {
     // TODO: send the message _after_ fetching the hero
     this.messageService.add(`HeroService: fetched measure id=${id}`);
     this.populateMeasures();
-    return of(this.measures.find(measure => measure.measure_id === id));
+    return of(this.measures.find(measure => measure.id === id));
   }
 
   getBlankMeasures(): Observable<Measure[]> {

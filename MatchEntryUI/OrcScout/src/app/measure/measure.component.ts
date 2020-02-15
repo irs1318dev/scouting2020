@@ -18,8 +18,8 @@ export class MeasureComponent implements OnInit {
   constructor(private heroService: HeroService) { }
 
   ngOnInit() {
-    this.heroService.getMeasure(this.measure.measure_id).subscribe(measure => this.measure = measure);
-    this.options = ENUMOPTIONS[this.measure.measure_name];
+    this.heroService.getMeasure(this.measure.id).subscribe(measure => this.measure = measure);
+    this.options = ENUMOPTIONS[this.measure.task_name];
   }
 
   public hit() {    

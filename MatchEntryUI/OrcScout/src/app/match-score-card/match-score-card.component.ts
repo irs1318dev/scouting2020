@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Measure, MatchScoreCard, Team, alliances, stations } from '../match';
+import { Measure, MatchScoreCard, Team } from '../match';
+import { alliances } from "../domain-tables/alliances";
 import { HeroService } from '../hero.service';
+import { stations } from '../domain-tables/stations';
 
 @Component({
   selector: 'app-match-score-card',

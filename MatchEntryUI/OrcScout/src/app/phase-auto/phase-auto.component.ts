@@ -17,6 +17,6 @@ export class PhaseAutoComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.measure_name == measureName);
+    return this.measures.find(c => c.task_name == measureName);
   }
 }
