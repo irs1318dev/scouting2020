@@ -11,7 +11,7 @@ import bokeh.io
 import server.season.s2019.view.rankingtable as rt
 import server.model.event as sme
 import server.config as sc
-import server.view.bokeh
+import server.view.bokeh_res
 
 
 def point_chart():
@@ -50,6 +50,6 @@ def pages_pointschart():
     col = blt.column([div1, div2, chart])
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
-    res = server.view.bokeh.LocalResource(
+    res = server.view.bokeh_res.LocalResource(
         os.path.join(sc.output_path(), 'static'))
     bokeh.io.save(col, title=title, resources=res)
