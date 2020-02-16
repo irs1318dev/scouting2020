@@ -25,6 +25,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
+import { PhaseTeleopComponent } from './phase-teleop/phase-teleop.component';
+import { PhaseEndgameComponent } from './phase-endgame/phase-endgame.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatchComponent,
     MeasureComponent,
     MatchScoreCardComponent,
-    PhaseAutoComponent
+    PhaseAutoComponent,
+    PhaseTeleopComponent,
+    PhaseEndgameComponent,
   ],
   imports: [
     BrowserModule,

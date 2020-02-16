@@ -3,5 +3,5 @@ export enum phases {
     claims = 2,
     auto = 3,
     teleop = 4,
-    finish
+    endgame 
 }

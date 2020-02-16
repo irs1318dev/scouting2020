@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Measure } from '../match';
+import { phases } from '../domain-tables/phases';
 
 @Component({
   selector: 'app-phase-auto',
@@ -17,6 +18,6 @@ export class PhaseAutoComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.task_name == measureName);
+    return this.measures.find(c => c.task_name == measureName && c.phase == phases.auto);
   }
 }

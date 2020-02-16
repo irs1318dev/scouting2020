@@ -17,14 +17,16 @@
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
       </div>
-      <!-- Insert a teleop component here -->
+      <app-phase-teleop [measures]=" matchScoreCard.score">
+      </app-phase-teleop>
   </mat-step>
   <mat-step>
       <ng-template matStepLabel>EndGame</ng-template>
       <div>
           <button mat-button matStepperPrevious>Back</button>
       </div>
-      <!-- Insert a endGame component here -->
+      <app-phase-endgame [measures]=" matchScoreCard.score">
+      </app-phase-endgame>
   </mat-step>
 </mat-horizontal-stepper>
 
