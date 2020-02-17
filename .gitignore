@@ -12,3 +12,4 @@ irs-scout/bin
 irs-scout/app
 irs-scout/build
 irs-scout/\.gradle
+venv/

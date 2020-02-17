@@ -248,10 +248,6 @@ class Scouting(object):
         server.model.setup.setup()
         return open(s_config.web_sites("reset.html")).read()
 
-    @cherrypy.expose
-    def teamname(self, team):
-        return self.eventDal.team_long_name(team)
-
 
 if __name__ == '__main__':
     cherrypy.config.update(

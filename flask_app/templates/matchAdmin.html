@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %} <!-- This the code for the second step of the match page -->
+	<div class='context-section'>
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-2">Please Fill out</legend>
+				<div class="form-group">
+					{{ form.name_list.label(class="form-control-label") }}
+					{{ form.name_list(class="form-control form-control-lg") }}
+				</div>
+			</fieldset>
+			<div class="form-group">
+				{{ form.submit(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	</div>
+{% endblock content %}

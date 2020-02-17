@@ -10,12 +10,12 @@ from collections import OrderedDict
 
 from sqlalchemy import text
 
-import server.model.connection
-import server.model.dal as sm_dal
-import server.model.event as event
+import core.data_access.connection
+import core.data_access.dal as sm_dal
+import core.data_access.event as event
 import server.scouting.game as game
 
-engine = server.model.connection.engine
+engine = core.data_access.connection.engine
 
 
 #todo(stacy) Consider doing JSON transformation for tablets in View section.
@@ -51,21 +51,20 @@ class MatchDal(object):
         for row in results:
             match_teams.append(dict(row))
 
-        red = TabletMatch("red")
-        blue = TabletMatch("blue")
+        red = []
+        blue = []
 
         for line in match_teams:
             if line['alliance'] == 'red':
-                red.teamadd(line['team'], line['match'])
+                red.append(dict(team=line['team'], match=line['match']))
             if line['alliance'] == 'blue':
-                blue.teamadd(line['team'], line['match'])
+                blue.append(dict(team=line['team'], match=line['match']))
+
+        output = {"red": red, "blue": blue}
 
         # todo(stacy) Is separator ("\n") needed at end?
-        out = json.dumps(red, default=lambda o: o.__dict__,
-                         separators=(', ', ':'), sort_keys=True) + '\n'
-        out += json.dumps(blue, default=lambda o: o.__dict__,
-                          separators=(', ', ':'), sort_keys=True) + '\n'
-        return out
+
+        return output
 
     @staticmethod
     def pit_teams():
@@ -99,7 +98,7 @@ class MatchDal(object):
 
         Returns measures for whichever event is set as the current
         event. To set the current event, call
-        `server.model.event.EventDal.set_current_event("event_code").
+        `core.data_access.event.EventDal.set_current_event("event_code").
 
         Args:
             match: (str) Match number, e.g., "034-q" or "002-p"
