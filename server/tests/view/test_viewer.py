@@ -1,6 +1,6 @@
 import pandas as pd
 
-import server.view.bk_app.viewer as svv
+import bk_app.viewer as svv
 import server.model.event as sme
 
 
