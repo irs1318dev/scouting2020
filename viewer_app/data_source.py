@@ -62,6 +62,7 @@ class DataSource:
         self.measures = None
         self.schedule = None
         self.teams = None
+        self.status = None
         self.event = event
         self.season = season
         self.fname = fname
@@ -82,6 +83,7 @@ class DataSource:
         self.teams = data['teams']
         self.event = data['event']
         self.season = data['season']
+        self.status = data['status']
 
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
@@ -99,16 +101,18 @@ class DataSource:
         self.season = evt[2]
 
         sql = """
-        SELECT * FROM schedules
-            WHERE event_id=%s
-            ORDER BY match, alliance;"""
-        self.schedule = pd.read_sql(sql, conn, params=[str(evt_id)])
+        SELECT * FROM vw_schedule;"""
+        self.schedule = pd.read_sql(sql, conn)
 
         sql = """
         SELECT * FROM teams
             WHERE teams.name IN
                 (SELECT team FROM schedules WHERE event_id = %s);"""
         self.teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+
+        sql = """
+        SELECT * FROM vw_status_date;"""
+        self.status = pd.read_sql(sql, conn)
 
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
@@ -133,7 +137,7 @@ class DataSource:
         """
         data = {'measures': self.measures, 'schedule': self.schedule,
                 'teams': self.teams, 'event': self.event,
-                'season': self.season}
+                'season': self.season, 'status': self.status}
 
         with open(fname, 'wb') as data_file:
             pickle.dump(data, data_file)
