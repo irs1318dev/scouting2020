@@ -39,4 +39,5 @@ def test_write_file():
     assert file_data.event == test_event_name
     assert file_data.season == test_season
     assert not file_data.from_sql
+    assert isinstance(file_data.status, pd.DataFrame)
 
