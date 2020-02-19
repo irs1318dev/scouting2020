@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Measure } from '../match';
 import { HeroService } from '../hero.service';
 import { EnumOption, ENUMOPTIONS } from '../enum-lookups';
+import { EnumOption, ENUMOPTION } from '../enum-lookups';
 
 @Component({
   selector: 'app-measure',
@@ -28,8 +29,10 @@ export class MeasureComponent implements OnInit {
   }
   
   public undoHit() {    
-    this.measure.attempts = this.measure.attempts - 1;
-    this.measure.successes = this.measure.successes - 1;
+    if(this.measure.attempts > 0 && this.measure.successes > 0)
+      this.measure.attempts = this.measure.attempts - 1;
+    if(this.measure.successes > 0 && this.measure.successes > 0)
+      this.measure.successes = this.measure.successes - 1;
   }
   
   public miss() {
@@ -37,7 +40,8 @@ export class MeasureComponent implements OnInit {
   }
   
   public undoMiss() {
-    this.measure.attempts = this.measure.attempts - 1;
+    if(this.measure.attempts > 0 && this.measure.attempts > this.measure.successes)
+      this.measure.attempts = this.measure.attempts - 1;
   }
 
 }

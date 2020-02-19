@@ -4,7 +4,7 @@
             <mat-label>{{measure.task_name}} </mat-label>
             <mat-select [(ngModel)]="measure.attempts" >
                 <mat-option *ngFor="let option of options" [value]="option.value" convert-to-number>
-                    {{option.task_name}}
+                    {{option.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
@@ -19,8 +19,8 @@
     </div>
     <div *ngIf="measure.type === 'COUNT'">
         <div class="button-header">{{measure.task_name}} {{measure.successes}}</div>
-        <button mat-raised-button color="primary" (click)="hit()">hit</button>
-        <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
+        <button mat-raised-button color="primary" (click)="hit()">+</button>
+        <button mat-stroked-button color="primary" (click)="undoHit()">-</button>  
     </div>
     <div *ngIf="measure.type === 'BOOL'">
         <div>
