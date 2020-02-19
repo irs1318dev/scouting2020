@@ -1,11 +1,11 @@
 import pandas as pd
 
-import viewer_app.viewer as svv
+import viewer_app.sixteam as svv
 import server.model.event as sme
 
 
 def test_viewer():
-    viewer = svv.Viewer(event='test_event_2', season='2020')
+    viewer = svv.SixTeam(event='test_event_2', season='2020')
     evt = sme.EventDal.get_current_event()
     assert evt[1] == 'test_event_2'
     assert evt[2] == '2020'
