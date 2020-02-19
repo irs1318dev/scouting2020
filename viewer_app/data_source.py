@@ -85,6 +85,7 @@ class DataSource:
         self.season = data['season']
         self.status = data['status']
 
+
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
         if self.event is not None and self.season is not None:
@@ -108,11 +109,19 @@ class DataSource:
         SELECT * FROM teams
             WHERE teams.name IN
                 (SELECT team FROM schedules WHERE event_id = %s);"""
-        self.teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+        teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+
+        sql = """
+        SELECT * FROM vw_num_matches;"""
+        num_matches = pd.read_sql(sql, conn)
+        self.teams = pd.concat([teams, num_matches], axis=1)
 
         sql = """
         SELECT * FROM vw_status_date;"""
         self.status = pd.read_sql(sql, conn)
+
+        # Return connection to pool.
+        smc.pool.putconn(conn)
 
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
