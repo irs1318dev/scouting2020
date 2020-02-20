@@ -114,6 +114,8 @@ class DataSource:
         SELECT * FROM vw_status_date;"""
         self.status = pd.read_sql(sql, conn)
 
+        smc.pool.putconn(conn)
+
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
 
@@ -142,3 +144,17 @@ class DataSource:
         with open(fname, 'wb') as data_file:
             pickle.dump(data, data_file)
 
+    def num_matches(self):
+        """Inserts a num_matches columns in the teams dataframe."""
+        teams_list = self.teams.name.unique()
+        num_matches = []
+        for team in teams_list:
+            df_matches = self.schedule[(self.schedule.team == team)]
+            match_list = df_matches.match.unique()
+            sorted_match = self.measures[self.measures.match.isin(match_list)]
+            sorted_match = sorted_match[(sorted_match.team == team)]
+            matches = sorted_match.match.unique()
+            num = len(matches)
+            num_matches.append(num)
+        self.teams = self.teams.insert(0, 'num_matches', num_matches, True)
+        return self.teams
