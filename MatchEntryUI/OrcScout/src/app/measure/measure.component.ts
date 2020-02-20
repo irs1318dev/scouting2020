@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Measure } from '../match';
 import { HeroService } from '../hero.service';
 import { EnumOption, ENUMOPTIONS } from '../enum-lookups';
-import { EnumOption, ENUMOPTION } from '../enum-lookups';
 
 @Component({
   selector: 'app-measure',
