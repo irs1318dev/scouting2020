@@ -60,6 +60,7 @@ class DataSource:
     def __init__(self, fname=None, event=None, season=None):
         """Initializes a DataSource object."""
         self.measures = None
+        self.enum_measures = None
         self.schedule = None
         self.teams = None
         self.status = None
@@ -79,12 +80,12 @@ class DataSource:
         with open(self.fname, 'rb') as data_file:
             data = pickle.load(data_file)
         self.measures = data['measures']
+        self.enum_measures = data['enum_measures']
         self.schedule = data['schedule']
         self.teams = data['teams']
         self.event = data['event']
         self.season = data['season']
         self.status = data['status']
-
 
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
@@ -96,20 +97,23 @@ class DataSource:
         sql = "SELECT * FROM vw_measures;"
         self.measures = pd.read_sql(sql, conn)
 
+        # Preprocess enumerated values
+        self.enum_measures = self._enum_preprocess()
+
+        # Get teams and event data
         evt = sme.EventDal.get_current_event()
         evt_id = evt[0]
         self.event = evt[1]
         self.season = evt[2]
-
-        sql = """
-        SELECT * FROM vw_schedule;"""
-        self.schedule = pd.read_sql(sql, conn)
-
         sql = """
         SELECT * FROM teams
             WHERE teams.name IN
                 (SELECT team FROM schedules WHERE event_id = %s);"""
         teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+
+        sql = """
+        SELECT * FROM vw_schedule;"""
+        self.schedule = pd.read_sql(sql, conn)
 
         sql = """
         SELECT * FROM vw_num_matches;"""
@@ -122,6 +126,7 @@ class DataSource:
 
         # Return connection to pool.
         smc.pool.putconn(conn)
+
 
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
@@ -137,17 +142,34 @@ class DataSource:
         else:
             self._load_from_file()
 
-    def write_file(self, fname = None):
+    def write_file(self, fname=None):
         """Writes all data to a Python pickle file.
 
         Args:
             fname: A Python style filename or path. fname must work with
                 Python's built-in open() function.
         """
-        data = {'measures': self.measures, 'schedule': self.schedule,
+        data = {'measures': self.measures, 'enum_measures': self.enum_measures,
+                'schedule': self.schedule,
                 'teams': self.teams, 'event': self.event,
                 'season': self.season, 'status': self.status}
 
         with open(fname, 'wb') as data_file:
             pickle.dump(data, data_file)
 
+    def _enum_preprocess(self):
+        """Modifies enumerated tasks to simplify plotting.
+
+        1. For all enumerated tasks in the measures table, modifies
+        value of task measures.task to {task_name}_{enum_value}.
+        2. Places a 1 integer in the measures.successes column.
+
+        Returns:
+            Pandas dataframe
+        """
+        measures = self.measures.copy()
+        measures.loc[
+            measures.measuretype == 'enum',
+            'task'] = (measures.task + '_' + measures.capability)
+        measures.loc[measures.measuretype == 'enum', 'successes'] = 1
+        return measures.copy()
