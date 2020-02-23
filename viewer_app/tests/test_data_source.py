@@ -41,3 +41,9 @@ def test_write_file():
     assert not file_data.from_sql
     assert isinstance(file_data.status, pd.DataFrame)
 
+def test_num_teams():
+    data = app_data.DataSource(event=test_event_name, season=test_season)
+    print()
+    print(data.schedule.columns)
+
+
