@@ -60,6 +60,7 @@ class DataSource:
     def __init__(self, fname=None, event=None, season=None):
         """Initializes a DataSource object."""
         self.measures = None
+        self.enum_measures = None
         self.schedule = None
         self.teams = None
         self.status = None
@@ -79,6 +80,7 @@ class DataSource:
         with open(self.fname, 'rb') as data_file:
             data = pickle.load(data_file)
         self.measures = data['measures']
+        self.enum_measures = data['enum_measures']
         self.schedule = data['schedule']
         self.teams = data['teams']
         self.event = data['event']
@@ -95,20 +97,23 @@ class DataSource:
         sql = "SELECT * FROM vw_measures;"
         self.measures = pd.read_sql(sql, conn)
 
+        # Preprocess enumerated values
+        self.enum_measures = self._enum_preprocess()
+
+        # Get teams and event data
         evt = sme.EventDal.get_current_event()
         evt_id = evt[0]
         self.event = evt[1]
         self.season = evt[2]
-
-        sql = """
-        SELECT * FROM vw_schedule;"""
-        self.schedule = pd.read_sql(sql, conn)
-
         sql = """
         SELECT * FROM teams
             WHERE teams.name IN
                 (SELECT team FROM schedules WHERE event_id = %s);"""
         teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+
+        sql = """
+        SELECT * FROM vw_schedule;"""
+        self.schedule = pd.read_sql(sql, conn)
 
         sql = """
         SELECT * FROM vw_num_matches;"""
@@ -121,6 +126,7 @@ class DataSource:
 
         # Return connection to pool.
         smc.pool.putconn(conn)
+
 
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
@@ -143,7 +149,8 @@ class DataSource:
             fname: A Python style filename or path. fname must work with
                 Python's built-in open() function.
         """
-        data = {'measures': self.measures, 'schedule': self.schedule,
+        data = {'measures': self.measures, 'enum_measures': self.enum_measures,
+                'schedule': self.schedule,
                 'teams': self.teams, 'event': self.event,
                 'season': self.season, 'status': self.status}
 
@@ -151,26 +158,18 @@ class DataSource:
             pickle.dump(data, data_file)
 
     def _enum_preprocess(self):
-        """self.tasks = tasks
-        measures = self.data.measures[
-            (self.data.measures.team == team) &
-            (self.data.measures.task.isin(tasks))].copy()
-        measures.loc[measures.capability.isin(['Side', 'Center']),
-                     'successes'] = 5
-        measures.loc[measures.capability == 'Parked', 'successes'] = 2
-        measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
-        measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
-        measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'"""
+        """Modifies enumerated tasks to simplify plotting.
 
-        self.measures.loc[self.measures.capability.isin(['Load', 'Cen', 'Goal']),
-                                                        'successes'] = 3
-        self.measures.loc[self.measures.capability == 'Load', 'task'] = 'start_loading'
-        self.measures.loc[self.measures.capability == 'Cen', 'task'] = 'start_center'
-        self.measures.loc[self.measures.capability == 'Goal', 'task'] = 'start_goal'
+        1. For all enumerated tasks in the measures table, modifies
+        value of task measures.task to {task_name}_{enum_value}.
+        2. Places a 1 integer in the measures.successes column.
 
-        self.measures.loc[self.measures.capability.isin(['Side', 'Center']),
-                                                        'successes'] = 5
-        self.measures.loc[self.measures.capability == 'Parked', 'successes'] = 2
-        self.measures.loc[self.measures.capability == 'Side', 'task'] = 'climb_side'
-        self.measures.loc[self.measures.capability == 'Center', 'task'] = 'climb_center'
-        self.measures.loc[self.measures.capability == 'Parked', 'task'] = 'climb_parked'
+        Returns:
+            Pandas dataframe
+        """
+        measures = self.measures.copy()
+        measures.loc[
+            measures.measuretype == 'enum',
+            'task'] = (measures.task + '_' + measures.capability)
+        measures.loc[measures.measuretype == 'enum', 'successes'] = 1
+        return measures.copy()
