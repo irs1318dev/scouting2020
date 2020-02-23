@@ -22,15 +22,9 @@ class OneTeam:
 
     def df_new_1t(self, team, tasks):
         self.tasks = tasks
-        measures = self.data.measures[
-            (self.data.measures.team == team) &
-            (self.data.measures.task.isin(tasks))].copy()
-        # measures.loc[measures.capability.isin(['Side', 'Center']),
-        #              'successes'] = 5
-        # measures.loc[measures.capability == 'Parked', 'successes'] = 2
-        # measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
-        # measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
-        # measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'
+        measures = self.data.enum_measures[
+            (self.data.enum_measures.team == team) &
+            (self.data.enum_measures.task.isin(tasks))].copy()
 
         # get matches
         grouped = measures.groupby(['match', 'task'])
@@ -47,7 +41,13 @@ class OneTeam:
         tasks = tasks[1:]
         matches = self.cds.data['match']
         plt_title = "Team " + team
-        colors = bk_palettes.Category20[len(tasks)]
+        num_tasks = len(tasks)
+        if num_tasks == 1:
+            colors = ['#5900b3']
+        elif num_tasks == 2:
+            colors = ['#5900b3', '#e6b800']
+        else:
+            colors = bk_palettes.Category20[len(tasks)]
         self.pcplot = plt.figure(x_range=matches, plot_height=250,
                                  title=plt_title, tools="hover",
                                  tooltips="$name: @$name")
