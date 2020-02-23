@@ -31,8 +31,6 @@ class OneTeam:
         measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
         measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'
 
-        self.tasks = list(pd.unique(measures.task))
-
         # get matches
         grouped = measures.groupby(['match', 'task'])
         grouped = grouped.sum()
