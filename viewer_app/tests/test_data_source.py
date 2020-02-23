@@ -51,8 +51,14 @@ def test_panel():
     oneteam = va_oneteam.OneTeam(data)
     panel = oneteam.panel_1t('1318', ['shootOuter', 'climbPosition'])
 
+
 def test_enum_measures():
     data = va_data_source.DataSource(event=test_event_name,
                                      season=test_season)
     enum_meas = data._enum_preprocess()
 
+
+def test_num_teams():
+    data = app_data.DataSource(event=test_event_name, season=test_season)
+    print()
+    print(data.schedule.columns)

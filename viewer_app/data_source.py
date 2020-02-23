@@ -127,7 +127,6 @@ class DataSource:
         # Return connection to pool.
         smc.pool.putconn(conn)
 
-
     def refresh(self, fname=None):
         """Refreshes data by reconnecting to the database or to a file.
 
@@ -173,3 +172,42 @@ class DataSource:
             'task'] = (measures.task + '_' + measures.capability)
         measures.loc[measures.measuretype == 'enum', 'successes'] = 1
         return measures.copy()
+
+    def num_matches(self):
+        """Inserts a num_matches columns in the teams dataframe.
+        NOTES FROM STACY
+        ==================================================
+        1. We don't want to have to run a num_matches function. The
+        number of matches should be added to the teams dataframe
+        automatically when the DataSource object is instantiated,
+        i.e., the code that figures out the number of matches should
+        be called from within the __init__() method.
+        2. We should get the max match number from the measures table.
+        Your sorting technique below (`sorted_match`) should work for
+        this. Just get the biggest match number from the measures table.
+        This only needs to be done once -- no need to put this in a for
+        loop.
+        3. Filter the schedules table to contain only rows with a match
+        number less than or equal to the max-match-number from step 2.
+        4. Do a Pandas groupby operation on the filtered schedules
+        dataframe from step 3. Group by team.
+        5. Aggregate the pandas groupby object from step 4. Use the
+        count() aggregation function.
+        6. The count column in the aggregated schedules column should be
+        the number of matches for each team. Add this data to a new
+        column in the teams table.
+        """
+
+        teams_list = self.teams.name.unique()
+        num_matches = []
+        for team in teams_list:
+            df_matches = self.schedule[(self.schedule.team == team)]
+            match_list = df_matches.match.unique()
+            sorted_match = self.measures[self.measures.match.isin(match_list)]
+            sorted_match = sorted_match[(sorted_match.team == team)]
+            matches = sorted_match.match.unique()
+            num = len(matches)
+            num_matches.append(num)
+        self.teams = self.teams.insert(0, 'num_matches', num_matches, True)
+        return self.teams
+
