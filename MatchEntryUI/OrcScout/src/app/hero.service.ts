@@ -7,6 +7,13 @@ import { MessageService } from './message.service';
 import { RedVBlue } from './models/redVblue';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Match } from './match';
+import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
+
+
+import { Component, OnInit, Input } from '@angular/core';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -63,13 +70,31 @@ export class HeroService {
     return of(HEROES.find(hero => hero.id === id));
   }
 
-  saveMeasures(): void {
+  clearMeasures(): void {
     if (this.measures == null || this.measures == null)
     {
       localStorage.removeItem("measures");
       return;
     }
     localStorage.setItem("measures", JSON.stringify(this.measures));
+  }
+
+  saveMeasures(): void {
+    console.log("why not");
+    {
+      for(let i=0;i<this.measures.length ;i++){
+        // how do we get the current team? 
+        // how do we get the current match number?
+        let thing = new String("/match/matchteamtask?match=" + Match.id + "&team=" + MatchScoreCardComponent.MatchScoreCard.selectedTeam + "&task=" + this.measures[i].task_name + "&phase=" + this.measures[i].phase);  
+      //  if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
+        if(this.measures[i].successes != 0) thing += "&success=" + this.measures[i].successes;
+        if(this.measures[i].attempts != 0) thing += "&attempt=" + this.measures[i].attempts;
+        console.log(thing);
+      }
+      //localStorage.removeItem("measures");
+      return;
+    }
+    //localStorage.setItem("measures", JSON.stringify(this.measures));
   }
 
   private populateMeasures() {
@@ -87,7 +112,7 @@ export class HeroService {
 
   public resetMeasures() {
     this.measures = MEASURES;
-    this.saveMeasures();
+    this.clearMeasures();
   }
 
   getMeasure(id: number): Observable<Measure> {

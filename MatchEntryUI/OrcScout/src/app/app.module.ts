@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { PhaseTeleopComponent } from './phase-teleop/phase-teleop.component';
 import { PhaseEndgameComponent } from './phase-endgame/phase-endgame.component';
+import { SendmoduleComponent } from './sendmodule/sendmodule.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PhaseEndgameComponent } from './phase-endgame/phase-endgame.component';
     PhaseAutoComponent,
     PhaseTeleopComponent,
     PhaseEndgameComponent,
+    SendmoduleComponent,
   ],
   imports: [
     BrowserModule,

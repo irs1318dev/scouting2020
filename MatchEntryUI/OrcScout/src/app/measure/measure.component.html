@@ -3,8 +3,8 @@
         <mat-form-field>
             <mat-label>{{measure.task_name}} </mat-label>
             <mat-select [(ngModel)]="measure.attempts" >
-                <mat-option *ngFor="let option of options" [value]="option.value" convert-to-number>
-                    {{option.name}}
+                <mat-option color="primary" *ngFor="let option of options" [value]="option.value" convert-to-number>
+                    {{option.name}} 
                 </mat-option>
             </mat-select>
         </mat-form-field>
