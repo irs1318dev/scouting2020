@@ -65,6 +65,7 @@ class DataSource:
             WHERE teams.name IN
                 (SELECT team FROM schedules WHERE event_id = %s);"""
         self.teams = pd.read_sql(sql, conn, params=[str(evt_id)])
+        smc.pool.putconn(conn)
 
     def refresh(self, fname=None):
         if fname is not None:
