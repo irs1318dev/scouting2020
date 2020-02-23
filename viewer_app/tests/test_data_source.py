@@ -21,7 +21,7 @@ def test_data_source():
 
     assert isinstance(data.schedule, pd.DataFrame)
     assert isinstance(data.teams, pd.DataFrame)
-    assert data.teams.shape[1] == 7
+    assert data.teams.shape[1] == 9
     assert data.teams.shape[0] > 20
 
     assert data.event == test_event_name
