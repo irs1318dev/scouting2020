@@ -5,7 +5,6 @@ import bokeh.plotting as plt
 import bokeh.layouts as blay
 import bokeh.models.widgets as bmw
 import bokeh.palettes as bk_palettes
-import pandas as pd
 
 
 class OneTeam:
