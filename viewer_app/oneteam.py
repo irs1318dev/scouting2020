@@ -4,6 +4,7 @@ import bokeh.models as bk_models
 import bokeh.plotting as plt
 import bokeh.layouts as blay
 import bokeh.models.widgets as bmw
+import pandas as pd
 
 
 class OneTeam:
@@ -20,12 +21,17 @@ class OneTeam:
 
     def df_new_1t(self, team, tasks):
         self.tasks = tasks
-        measures = self.data.measures[(self.data.measures.team == team) & (self.data.measures.task.isin(tasks))].copy()
-        measures.loc[measures.capability.isin(['Side', 'Center']), 'successes'] = 5
+        measures = self.data.measures[
+            (self.data.measures.team == team) &
+            (self.data.measures.task.isin(tasks))].copy()
+        measures.loc[measures.capability.isin(['Side', 'Center']),
+                     'successes'] = 5
         measures.loc[measures.capability == 'Parked', 'successes'] = 2
         measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
         measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
         measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'
+
+        self.tasks = list(pd.unique(measures.task))
 
         # get matches
         grouped = measures.groupby(['match', 'task'])
@@ -33,7 +39,6 @@ class OneTeam:
         grouped = grouped.drop(columns=grouped.columns[1:5])
         grouped = grouped['successes']
         df_unstacked = grouped.unstack()
-        # df_unstacked.columns = df_unstacked.columns.droplevel()
         df_fil = df_unstacked.fillna(0)
         return df_fil
 
@@ -48,8 +53,8 @@ class OneTeam:
                                  title=plt_title, tools="hover",
                                  tooltips="$name: @$name")
         self.pcplot.vbar_stack(tasks, x='match', width=0.4,
-                               source=self.cds, color=colors,
-                               legend_label=[" " + str(task) for task in tasks])
+                               source=self.cds, color=colors)
+                               # legend_label=[" " + str(task) for task in tasks])
         return self.pcplot
 
     def list_teams(self):
@@ -64,4 +69,5 @@ class OneTeam:
 
     def panel_1t(self, team, tasks):
         self.layout_1t(team, tasks)
-        return bk_models.Panel(child=self.layout, title='One Team Charts')
+        return bk_models.Panel(child=self.layout,
+                               title='One Team Charts')
