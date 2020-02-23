@@ -85,7 +85,6 @@ class DataSource:
         self.season = data['season']
         self.status = data['status']
 
-
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
         if self.event is not None and self.season is not None:
@@ -137,7 +136,7 @@ class DataSource:
         else:
             self._load_from_file()
 
-    def write_file(self, fname = None):
+    def write_file(self, fname=None):
         """Writes all data to a Python pickle file.
 
         Args:
@@ -150,4 +149,3 @@ class DataSource:
 
         with open(fname, 'wb') as data_file:
             pickle.dump(data, data_file)
-
