@@ -4,6 +4,7 @@ import bokeh.models as bk_models
 import bokeh.plotting as plt
 import bokeh.layouts as blay
 import bokeh.models.widgets as bmw
+import bokeh.palettes as bk_palettes
 import pandas as pd
 
 
@@ -24,12 +25,12 @@ class OneTeam:
         measures = self.data.measures[
             (self.data.measures.team == team) &
             (self.data.measures.task.isin(tasks))].copy()
-        measures.loc[measures.capability.isin(['Side', 'Center']),
-                     'successes'] = 5
-        measures.loc[measures.capability == 'Parked', 'successes'] = 2
-        measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
-        measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
-        measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'
+        # measures.loc[measures.capability.isin(['Side', 'Center']),
+        #              'successes'] = 5
+        # measures.loc[measures.capability == 'Parked', 'successes'] = 2
+        # measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
+        # measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
+        # measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'
 
         # get matches
         grouped = measures.groupby(['match', 'task'])
@@ -46,13 +47,16 @@ class OneTeam:
         tasks = tasks[1:]
         matches = self.cds.data['match']
         plt_title = "Team " + team
-        colors = ['purple', 'yellow']
+        colors = bk_palettes.Category20[len(tasks)]
         self.pcplot = plt.figure(x_range=matches, plot_height=250,
                                  title=plt_title, tools="hover",
                                  tooltips="$name: @$name")
-        self.pcplot.vbar_stack(tasks, x='match', width=0.4,
+
+        glyphs = self.pcplot.vbar_stack(tasks, x='match', width=0.4,
                                source=self.cds, color=colors)
-                               # legend_label=[" " + str(task) for task in tasks])
+        legend_items = [(tasks[i], [glyphs[i]]) for i in range(0, len(tasks), 1)]
+        legend = bk_models.Legend(items=legend_items, location='center')
+        self.pcplot.add_layout(legend, 'right')
         return self.pcplot
 
     def list_teams(self):

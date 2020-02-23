@@ -149,3 +149,28 @@ class DataSource:
 
         with open(fname, 'wb') as data_file:
             pickle.dump(data, data_file)
+
+    def _enum_preprocess(self):
+        """self.tasks = tasks
+        measures = self.data.measures[
+            (self.data.measures.team == team) &
+            (self.data.measures.task.isin(tasks))].copy()
+        measures.loc[measures.capability.isin(['Side', 'Center']),
+                     'successes'] = 5
+        measures.loc[measures.capability == 'Parked', 'successes'] = 2
+        measures.loc[measures.capability == 'Side', 'task'] = 'climb_side'
+        measures.loc[measures.capability == 'Center', 'task'] = 'climb_center'
+        measures.loc[measures.capability == 'Parked', 'task'] = 'climb_parked'"""
+
+        self.measures.loc[self.measures.capability.isin(['Load', 'Cen', 'Goal']),
+                                                        'successes'] = 3
+        self.measures.loc[self.measures.capability == 'Load', 'task'] = 'start_loading'
+        self.measures.loc[self.measures.capability == 'Cen', 'task'] = 'start_center'
+        self.measures.loc[self.measures.capability == 'Goal', 'task'] = 'start_goal'
+
+        self.measures.loc[self.measures.capability.isin(['Side', 'Center']),
+                                                        'successes'] = 5
+        self.measures.loc[self.measures.capability == 'Parked', 'successes'] = 2
+        self.measures.loc[self.measures.capability == 'Side', 'task'] = 'climb_side'
+        self.measures.loc[self.measures.capability == 'Center', 'task'] = 'climb_center'
+        self.measures.loc[self.measures.capability == 'Parked', 'task'] = 'climb_parked'
