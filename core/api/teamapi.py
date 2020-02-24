@@ -22,7 +22,7 @@ class TeamApi(object):
             self.alltablets = all_tablets
 
     @cherrypy.expose()
-    def team_match(team):
+    def team_match(self, team):
         sql = '''
               SELECT schedules.match FROM schedules
               INNER JOIN status ON schedules.event_id = status.event_id WHERE team = %s

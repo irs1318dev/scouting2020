@@ -9,6 +9,7 @@ import core.api.teamapi
 import core.api.eventapi
 import core.api.tabletapi
 import core.api.matchapi
+import core.api.measuresapi
 
 
 
@@ -33,6 +34,7 @@ if __name__ == '__main__':
     cherrypy.tree.mount(core.api.viewerapi.ViewerApi(False), '/view', config=conf)
     cherrypy.tree.mount(core.api.gameapi.GameApi(), '/game', config=conf)
     cherrypy.tree.mount(core.api.teamapi.TeamApi(), '/team', config=conf)
+    cherrypy.tree.mount(core.api.measuresapi.MeasuresApi(), '/measure', config=conf)
     cherrypy.tree.mount(core.api.tabletapi.TabletApi(), '/tablet', config=conf)
     cherrypy.tree.mount(core.api.eventapi.EventApi(), '/event', config=conf)
     cherrypy.tree.mount(core.api.matchapi.MatchApi(), '/match', config=conf)

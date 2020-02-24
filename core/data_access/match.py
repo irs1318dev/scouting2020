@@ -18,7 +18,7 @@ import server.scouting.game as game
 engine = core.data_access.connection.engine
 
 
-#todo(stacy) Consider doing JSON transformation for tablets in View section.
+# todo(stacy) Consider doing JSON transformation for tablets in View section.
 class MatchDal(object):
 
     @staticmethod
@@ -56,9 +56,15 @@ class MatchDal(object):
 
         for line in match_teams:
             if line['alliance'] == 'red':
-                red.append(dict(team=line['team'], match=line['match']))
+                red.append({'team': line['team'],
+                            'match': line['match'],
+                            'alliance': line['alliance'],
+                            'station': line['station']})
             if line['alliance'] == 'blue':
-                blue.append(dict(team=line['team'], match=line['match']))
+                blue.append({'team': line['team'],
+                             'match': line['match'],
+                             'alliance': line['alliance'],
+                             'station': line['station']})
 
         output = {"red": red, "blue": blue}
 
@@ -93,7 +99,33 @@ class MatchDal(object):
         return '''{"match":"na", "teams":[''' + pit_teams + ']}'
 
     @staticmethod
-    def match_team_tasks(match, team):
+    def pit_teams_json():
+        """Returns JSON list of teams sheduled to compete.
+
+        Returns: (str) JSON string with following format:
+        {"match":"na", "teams":["nnnn", "nnnn", ...,  "na"]}
+        """
+        pit_teams = ''
+        sql = text("SELECT DISTINCT team FROM schedules WHERE "
+                   "event_id = :evt_id ORDER BY team;")
+
+        conn = engine.connect()
+        results = conn.execute(sql,
+                               evt_id=event.EventDal.get_current_event()[0])
+        conn.close()
+
+        first = True
+        for row in results:
+            if first:
+                pit_teams += '"' + str(row).split('\'')[1] + '"'
+                first = False
+            else:
+                pit_teams += ',"' + str(row).split('\'')[1] + '"'
+
+        return '''{"match":"na", "teams":[''' + pit_teams + ']}'
+
+    @staticmethod
+    def get_score(match, team):
         """Gets JSON string of all measures for specific team and match.
 
         Returns measures for whichever event is set as the current
@@ -120,6 +152,71 @@ class MatchDal(object):
 
         event_id = event.EventDal.get_current_event()[0]
 
+        sql = text("""
+                        SELECT * FROM measures WHERE
+                        event_id = :event_id
+                        AND match_id = :match_id
+                        AND team_id = :team_id;
+                        """)
+
+        conn = engine.connect()
+        results = conn.execute(sql, event_id=event_id, match_id=match_id,
+                               team_id=team_id).fetchall()
+        conn.close()
+
+        score = []
+        for row in results:
+            task = sm_dal.task_names[row['task_id']]
+            actor = sm_dal.actor_names[row['actor_id']]
+            phase = sm_dal.phase_names[row['phase_id']]
+            measuretype = sm_dal.measuretype_names[row['measuretype_id']]
+            capability = row['capability']
+            attempts = row['attempts']
+            successes = row['successes']
+            cycle_times = row['cycle_times']
+
+            if capability > 0:
+                capability = sm_dal.task_option_options[capability]
+
+            score.append({'match': match,
+                          'team': team,
+                          'task': task,
+                          'phase': phase,
+                          'actor': actor,
+                          'measuretype': measuretype,
+                          'capability': capability,
+                          'attempts': attempts,
+                          'successes': successes,
+                          'cycle_times': cycle_times})
+        return score
+
+    @staticmethod
+    def match_team_tasks(match, team):
+        """Gets JSON string of all measures for specific team and match.
+
+        Returns measures for whichever event is set as the current
+        event. To set the current event, call
+        `core.data_access.event.EventDal.set_current_event("event_code").
+
+        Args:
+            match: (str) Match number, e.g., "034-q" or "002-p"
+            team: (str) FRC team number, e.g., 1318 or 360.
+
+        Returns: Several JSON strings combined into a single string,
+        with each string separated by a carriage return ('\n').
+        Each individual JSON string is in the following format:
+
+            {"match": "nnn-p|q", "team": "nnnn", "task": "{task_name}",
+            "phase": "{phase}", "actor": "{actor}",
+            "measuretype": "{measuretype}", "capability": 0|1,
+            "attempts": {int}, "successes": {int},
+            "cycle_times": {int}}
+        """
+        # todo(stacy) add optional event argument.
+        match_id = sm_dal.match_ids[match]
+        team_id = sm_dal.team_ids[team]
+
+        event_id = event.EventDal.get_current_event()[0]
 
         sql = text("""
                     SELECT * FROM measures WHERE
@@ -207,13 +304,13 @@ class MatchDal(object):
             "team_id, station_id, actor_id, task_id, measuretype_id, "
             "phase_id, attempt_id, reason_id, capability, attempts, "
             "successes, cycle_times) "
-            
+
             "VALUES("
             ":date_id, :event_id, :level_id, :match_id, :alliance_id, "
             ":team_id, :station_id, :actor_id, :task_id, :measuretype_id, "
             ":phase_id, :attempt_id, :reason_id, :capability, :attempts, "
             ":successes, :cycle_times) "
-            
+
             "ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
             "SET capability=:capability, attempts=:attempts, "
             "successes=:successes, cycle_times=:cycle_times;")
@@ -302,7 +399,7 @@ class MatchDal(object):
                      successes=success_count, cycle_times=cycle_time)
         conn.close()
 
-# todo(stacy) Talk to Stuart about this function
+    # todo(stacy) Talk to Stuart about this function
     @staticmethod
     def _transform_measure(data_type, capability, attempt_count, success_count,
                            cycle_time, task_name):
@@ -363,6 +460,7 @@ class TabletMatch(object):
     This class is used in match)_teams function to generate JSON text
     to send to tablets.
     """
+
     def __init__(self, alliance):
         self.alliance = alliance
         self.match = ''
@@ -382,10 +480,9 @@ class TabletMatch(object):
                 if self.team3 is '':
                     self.team3 = name
 
+
 # todo(Stacy) Not used anywhere - consider eliminating
 class PitMatch(object):
     def __init__(self, teams):
         self.match = 'na'
         self.teams = teams
-
-

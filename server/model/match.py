@@ -94,6 +94,55 @@ class MatchDal(object):
         return '''{"match":"na", "teams":[''' + pit_teams + ']}'
 
     @staticmethod
+    def get_score(match, team):
+        # todo(stacy) add optional event argument.
+        match_id = sm_dal.match_ids[match]
+        team_id = sm_dal.team_ids[team]
+
+        event_id = event.EventDal.get_current_event()[0]
+
+
+        sql = text("""
+                    SELECT * FROM measures WHERE
+                    event_id = :event_id
+                    AND match_id = :match_id
+                    AND team_id = :team_id;
+                    """)
+
+        conn = engine.connect()
+        results = conn.execute(sql, event_id=event_id, match_id=match_id,
+                               team_id=team_id).fetchall()
+        conn.close()
+
+        out = {}
+        for row in results:
+            task = sm_dal.task_names[row['task_id']]
+            actor = sm_dal.actor_names[row['actor_id']]
+            phase = sm_dal.phase_names[row['phase_id']]
+            measuretype = sm_dal.measuretype_names[row['measuretype_id']]
+            capability = row['capability']
+            attempts = row['attempts']
+            successes = row['successes']
+            cycle_times = row['cycle_times']
+
+            if capability > 0:
+                capability = sm_dal.task_option_options[capability]
+
+
+            out += (json.dumps(OrderedDict([('match', match), ('team', team),
+                                            ('task', task), ('phase', phase),
+                                            ('actor', actor),
+                                            ('measuretype', measuretype),
+                                            ('capability', capability),
+                                            ('attempts', attempts),
+                                            ('successes', successes),
+                                            ('cycle_times', cycle_times)])) +
+                    '\n')
+
+        return out
+
+
+    @staticmethod
     def match_team_tasks(match, team):
         """Gets JSON string of all measures for specific team and match.
 
