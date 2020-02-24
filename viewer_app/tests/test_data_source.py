@@ -59,6 +59,6 @@ def test_enum_measures():
 
 
 def test_num_teams():
-    data = app_data.DataSource(event=test_event_name, season=test_season)
+    data = va_data_source.DataSource(event=test_event_name, season=test_season)
     print()
-    print(data.schedule.columns)
+    print(data.teams)
