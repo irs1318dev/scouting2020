@@ -1,8 +1,28 @@
-<div>team {{matchScoreCard.selectedTeam.name}}</div>
-<div>alliance {{matchScoreCard.selectedTeam.alliance}}</div>
-<div>station {{matchScoreCard.selectedTeam.station}}</div>
 
-<mat-horizontal-stepper linear="true" #stepper>
+<mat-form-field>
+    <mat-label>Station </mat-label>
+    <mat-select [disabled]="matchStarted" [(ngModel)]="matchScoreCard.selectedTeam.station" (selectionChange)="getAllianceName()" >
+        <mat-option *ngFor="let station of stations" [value]="station.value">
+            {{station.name}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Alliance </mat-label>
+    <mat-select [disabled]="matchStarted" [(ngModel)]="matchScoreCard.selectedTeam.alliance" (selectionChange)="getAllianceName()">
+        <mat-option *ngFor="let alliance of alliances" [value]="alliance.value">
+            {{alliance.name}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Team </mat-label>
+    <input disabled=true matInput [(ngModel)]=matchScoreCard.selectedTeam.name>
+</mat-form-field>
+
+<button mat-button color="primary" [hidden]="matchStarted" [disabled]="!matchScoreCard.selectedTeam.name" (click)="retreiveMeasures()">Start Match</button>
+<button mat-raised-button color="accent" [hidden]="!matchStarted" [disabled]="!matchScoreCard.selectedTeam.name" (click)="sendMeasures()">Finish Match</button>
+<mat-horizontal-stepper [hidden]="!matchStarted"  linear="true" #stepper>
   <mat-step>
       <ng-template matStepLabel>Auto</ng-template>
       <div>
@@ -27,5 +47,3 @@
       <!-- Insert a endGame component here -->
   </mat-step>
 </mat-horizontal-stepper>
-
-<button (click)="resetMeasures()">Reset</button>

@@ -15,16 +15,9 @@ import { MatchScoreCardComponent } from './match-score-card/match-score-card.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PhaseAutoComponent } from './phase-auto/phase-auto.component';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSlideToggleModule, MatSliderModule, 
+  MatSidenavModule, MatToolbarModule, MatCardModule, MatSelectModule, MatStepperModule, MatListModule } 
+  from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -53,7 +46,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatInputModule,
     MatCardModule,
     MatSelectModule,
-    MatStepperModule
+    MatStepperModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

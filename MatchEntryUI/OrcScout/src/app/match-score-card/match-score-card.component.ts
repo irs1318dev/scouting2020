@@ -1,8 +1,11 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, SimpleChanges } from '@angular/core';
 import { Measure, MatchScoreCard, Team } from '../match';
 import { alliances } from "../domain-tables/alliances";
 import { HeroService } from '../hero.service';
+import { EnumOption, DOMAINOPTIONS } from '../enum-lookups';
 import { stations } from '../domain-tables/stations';
+import { RedVBlue } from '../models/redVblue';
+import { MatchService } from '../match.service';
 
 @Component({
   selector: 'app-match-score-card',
@@ -13,10 +16,14 @@ import { stations } from '../domain-tables/stations';
   templateUrl: './match-score-card.component.html',
   styleUrls: ['./match-score-card.component.less']
 })
-export class MatchScoreCardComponent implements OnInit {
 
+export class MatchScoreCardComponent implements OnInit {
+  matchStarted: boolean;
+  redVBlue: RedVBlue;
+  stations: EnumOption[];
+  alliances: EnumOption[];
   matchScoreCard: MatchScoreCard;
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, private matchService: MatchService) { }
 
   
   @HostListener('window:beforeunload', ['$event']) 
@@ -25,12 +32,38 @@ export class MatchScoreCardComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.matchStarted = false;
+    this.getRedVBlue();
+    this.stations = DOMAINOPTIONS['stations'];
+    this.alliances = DOMAINOPTIONS['alliances'];
     this.matchScoreCard = new MatchScoreCard();
     this.matchScoreCard.selectedTeam = new Team();
-    this.matchScoreCard.selectedTeam.name = "test team";
-    this.matchScoreCard.selectedTeam.alliance = alliances.blue; 
-    this.matchScoreCard.selectedTeam.station = stations.one; 
+    this.matchScoreCard.selectedTeam.alliance = alliances.na; 
+    this.matchScoreCard.selectedTeam.station = stations.na; 
     this.getMeasures();
+    this. getAllianceName();
+  }
+  
+  getAllianceName(): void {
+    if (this.matchScoreCard.selectedTeam.alliance === alliances.na || this.matchScoreCard.selectedTeam.station === stations.na)
+    {
+      this.matchScoreCard.selectedTeam.name = '';
+    }
+    else if (this.matchScoreCard.selectedTeam.alliance === alliances.red)
+    {
+      let team = this.redVBlue.red.find(c => c.station == this.matchScoreCard.selectedTeam.station);
+      this.matchScoreCard.selectedTeam.name =team.team;
+    }
+    else if (this.matchScoreCard.selectedTeam.alliance === alliances.blue)
+    {
+      let team = this.redVBlue.blue.find(c => c.station == this.matchScoreCard.selectedTeam.station);
+      this.matchScoreCard.selectedTeam.name = team.team;
+    }
+  }
+
+  getRedVBlue(): void {
+    this.matchService.getMatch(null)
+        .subscribe(redVBlue => this.redVBlue= redVBlue);
   }
 
   getMeasures(): void {
@@ -38,7 +71,13 @@ export class MatchScoreCardComponent implements OnInit {
         .subscribe(measures => this.matchScoreCard.score = measures);
   }
 
-  resetMeasures(): void {    
+  retreiveMeasures(): void {    
+    this.matchStarted = true;
+    this.heroService.resetMeasures();
+  }
+  
+  sendMeasures(): void {    
+    this.matchStarted = true;
     this.heroService.resetMeasures();
   }
 }

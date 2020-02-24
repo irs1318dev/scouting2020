@@ -1,16 +1,14 @@
+import { alliances } from '../domain-tables/alliances';
+import { stations } from '../domain-tables/stations';
 
-
-    export interface Red {
+    export interface Alliance {
         team: string;
         match: string;
-    }
-
-    export interface Blue {
-        team: string;
-        match: string;
+        alliance: alliances;
+        station: stations;
     }
 
     export interface RedVBlue {
-        red: Red[];
-        blue: Blue[];
+        red: Alliance[];
+        blue: Alliance[];
     }

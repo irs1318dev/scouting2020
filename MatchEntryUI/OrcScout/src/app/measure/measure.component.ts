@@ -19,7 +19,7 @@ export class MeasureComponent implements OnInit {
 
   ngOnInit() {
     this.heroService.getMeasure(this.measure.id).subscribe(measure => this.measure = measure);
-    this.options = ENUMOPTIONS[this.measure.task_name];
+    this.options = ENUMOPTIONS[this.measure.display_name];
   }
 
   public hit() {    

@@ -17,13 +17,13 @@ export const HEROES: Hero[] = [
 ];
 
 export const MEASURES: Measure[] = [
-  { id: 11, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Starting' },
-  { id: 12, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Moved IL' },
-  { id: 13, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Crossed OS' },
-  { id: 14, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Collided' },
-  { id: 15, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Trench' },
-  { id: 16, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shield' },
-  { id: 17, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Outer' },
-  { id: 18, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Lower' },
-  { id: 19, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'Shoot Inner' },
+  { id: 11, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'startingPosition', display_name: 'Starting' },
+  { id: 12, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'movedAuto', display_name: 'Moved IL' },
+  { id: 13, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'crossOpponentSector', display_name: 'Crossed OS' },
+  { id: 14, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'collided', display_name: 'Collided' },
+  { id: 15, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'pickupPowerCellsT', display_name: 'Trench' },
+  { id: 16, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'pickupPowerCellsS', display_name: 'Shield' },
+  { id: 17, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'shootLower', display_name: 'Shoot Outer' },
+  { id: 18, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'shootUpper', display_name: 'Shoot Lower' },
+  { id: 19, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'shootInner', display_name: 'Shoot Inner' },
 ];

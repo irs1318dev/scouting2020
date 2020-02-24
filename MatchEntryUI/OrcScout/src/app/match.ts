@@ -26,6 +26,7 @@ export class Measure {
     id: number;
     attempts: number;
     successes: number;
+    display_name: string;
     task_name: string;
     type: string;
     task_id: number;

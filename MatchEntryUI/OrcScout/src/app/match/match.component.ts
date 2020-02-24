@@ -16,11 +16,12 @@ export class MatchComponent implements OnInit {
   constructor(private matchService: MatchService) { }
 
   ngOnInit() {
+    this.match = null;
     this.getRedVBlue();
   }
 
   getRedVBlue(): void {
-    this.matchService.getRedVBlue(this.match)
+    this.matchService.getMatch(this.match)
         .subscribe(heroes => this.redvBlue = heroes);
   }
 }
