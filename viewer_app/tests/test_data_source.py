@@ -62,3 +62,12 @@ def test_num_teams():
     data = va_data_source.DataSource(event=test_event_name, season=test_season)
     print()
     print(data.teams)
+
+def test_multiselect():
+    data = va_data_source.DataSource(event=test_event_name, season=test_season)
+    assert isinstance(data.enum_tasks, list)
+    assert len(data.enum_tasks) > 7
+    assert 'shootLower' in data.enum_tasks
+
+    oneteam = va_oneteam.OneTeam(data)
+    layout = oneteam.layout_1t('2046', ['shootLower'])

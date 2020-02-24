@@ -68,6 +68,7 @@ class DataSource:
         self.season = season
         self.fname = fname
         self.from_sql = False
+        self.enum_tasks = None
 
         if self.fname is not None:
             self._load_from_file()
@@ -86,6 +87,7 @@ class DataSource:
         self.event = data['event']
         self.season = data['season']
         self.status = data['status']
+        self.enum_tasks = list(pd.unique(self.enum_measures.task))
 
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
@@ -95,7 +97,8 @@ class DataSource:
         # Load measures data
         conn = smc.pool.getconn()
         sql = "SELECT * FROM vw_measures;"
-        self.measures = pd.read_sql(sql, conn)
+        measures = pd.read_sql(sql, conn)
+        self.measures = measures.dropna(subset=['task']).copy()
 
         # Preprocess enumerated values
         self.enum_measures = self._enum_preprocess()
@@ -120,6 +123,10 @@ class DataSource:
         sql = """
         SELECT * FROM vw_status_date;"""
         self.status = pd.read_sql(sql, conn)
+
+        enum_tasks = pd.unique(self.enum_measures.task)
+        enum_tasks.sort()
+        self.enum_tasks = list(enum_tasks)
 
         # Return connection to pool.
         smc.pool.putconn(conn)
@@ -168,7 +175,7 @@ class DataSource:
             measures.measuretype == 'enum',
             'task'] = (measures.task + '_' + measures.capability)
         measures.loc[measures.measuretype == 'enum', 'successes'] = 1
-        return measures.copy()
+        return measures.dropna(subset=['task']).copy()
 
     def _add_num_matches(self):
         """Inserts a num_matches columns in the teams dataframe.

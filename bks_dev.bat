@@ -1,1 +1,1 @@
-python -m bokeh serve --show viewer_app
+python -m bokeh serve --dev --show viewer_app

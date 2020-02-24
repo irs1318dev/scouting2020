@@ -1,10 +1,11 @@
 """Uses data to generate one team graphs.
 """
 import bokeh.models as bk_models
-import bokeh.plotting as plt
-import bokeh.layouts as blay
-import bokeh.models.widgets as bmw
+import bokeh.plotting as bk_plotting
+import bokeh.layouts as bk_layouts
+import bokeh.models.widgets as bk_widgets
 import bokeh.palettes as bk_palettes
+import pandas as pd
 
 
 class OneTeam:
@@ -15,9 +16,15 @@ class OneTeam:
         self.pcplot = None
         self.layout = None
         self.tasks = None
+        self.team_sel = None
+        self.task_sel = None
 
-    def callback_1t(self, attr, old, new):
-        self.layout.children[1] = self.total_1t(new, self.tasks)
+    def team_callback(self, attr, old, new):
+        self.layout.children[1] = self.total_1t(new, self.task_sel.value)
+
+    def button_callback(self):
+        self.layout.children[1] = self.total_1t(self.team_sel.value,
+                                                self.task_sel.value)
 
     def df_new_1t(self, team, tasks):
         self.tasks = tasks
@@ -47,13 +54,14 @@ class OneTeam:
             colors = ['#5900b3', '#e6b800']
         else:
             colors = bk_palettes.Category20[len(tasks)]
-        self.pcplot = plt.figure(x_range=matches, plot_height=250,
-                                 title=plt_title, tools="hover",
-                                 tooltips="$name: @$name")
+        self.pcplot = bk_plotting.figure(x_range=matches, plot_height=250,
+                                         title=plt_title, tools="hover",
+                                         tooltips="$name: @$name")
 
         glyphs = self.pcplot.vbar_stack(tasks, x='match', width=0.4,
                                source=self.cds, color=colors)
-        legend_items = [(tasks[i], [glyphs[i]]) for i in range(0, len(tasks), 1)]
+        legend_items = [(tasks[i], [glyphs[i]])
+                        for i in range(0, len(tasks), 1)]
         legend = bk_models.Legend(items=legend_items, location='center')
         self.pcplot.add_layout(legend, 'right')
         return self.pcplot
@@ -63,9 +71,20 @@ class OneTeam:
 
     def layout_1t(self, team, tasks):
         self.total_1t(team, tasks)
-        team_sel = bmw.Select(title='Match', options=self.list_teams())
-        team_sel.on_change('value', self.callback_1t)
-        self.layout = blay.row(team_sel, self.pcplot)
+
+        self.team_sel = bk_widgets.Select(title='Match',
+                                          options=self.list_teams(),
+                                          value=team)
+        self.team_sel.on_change('value', self.team_callback)
+        self.task_sel = bk_widgets.MultiSelect(title='Tasks',
+                                               options=self.data.enum_tasks,
+                                               size=40, value=tasks)
+
+        btn = bk_widgets.Button(label='Update')
+        btn.on_click(self.button_callback)
+
+        col_layout = bk_layouts.column(self.team_sel, self.task_sel, btn)
+        self.layout = bk_layouts.row(col_layout, self.pcplot)
         return self.layout
 
     def panel_1t(self, team, tasks):
