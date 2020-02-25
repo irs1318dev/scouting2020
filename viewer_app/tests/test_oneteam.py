@@ -11,6 +11,10 @@ def test_oneteam():
     assert oneteam.data.measures.shape[1] == 20
     assert len(oneteam.list_teams()) > 15
     plot = oneteam.plot_1t('1318')
-    print(plot)
     assert isinstance(oneteam.df_new_1t('1318'), pd.DataFrame)
+
+def test_noshow():
+    data = va_data_source.DataSource(event='test_event_2', season='2020')
+    oneteam = va_oneteam.OneTeam(data)
+    plot = oneteam.total_1t('1318', ['noShow'])
 

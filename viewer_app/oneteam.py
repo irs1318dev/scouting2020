@@ -48,7 +48,9 @@ class OneTeam:
         matches = self.cds.data['match']
         plt_title = "Team " + team
         num_tasks = len(tasks)
-        if num_tasks == 1:
+        if num_tasks == 0:
+            colors=[]
+        elif num_tasks == 1:
             colors = ['#5900b3']
         elif num_tasks == 2:
             colors = ['#5900b3', '#e6b800']
