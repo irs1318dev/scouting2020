@@ -19,7 +19,7 @@ export class PhaseTeleopComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.task_name == measureName && c.phase == phases.teleop);
+    return this.measures.find(c => c.display_name == measureName && c.phase == phases.teleop);
   }
 
 }

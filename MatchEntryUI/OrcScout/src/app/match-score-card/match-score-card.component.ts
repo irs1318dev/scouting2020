@@ -85,7 +85,7 @@ export class MatchScoreCardComponent implements OnInit {
   }
 
   sendMeasures(): void {    
-    this.matchStarted = true;
-    this.heroService.startMatch(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name);
+    this.matchStarted = false;
+    // WIP, does not yet  measures.  
   }
 }

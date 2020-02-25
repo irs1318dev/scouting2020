@@ -82,24 +82,15 @@ export class HeroService {
     localStorage.setItem("measures", JSON.stringify(this.measures));
   }
 
-
-
-  saveMeasures(Match, MatchScoreCardComponent): void {
-    console.log("why not");
+  // This method saves the measures to local storage it is not meant to be used to 
+  // save measures to the api.  We'll need to build that out.  
+  saveMeasures(): void {
+    if (this.measures == null || this.measures == null)
     {
-      for(let i=0;i<this.measures.length ;i++){
-        // how do we get the current team? Create match and match score card component?
-        // how do we get the current match number?
-        let thing = new String("/match/matchteamtask?match=" + Match.id + "&team=" + MatchScoreCardComponent.MatchScoreCard.selectedTeam + "&task=" + this.measures[i].task_name + "&phase=" + this.measures[i].phase);  
-      //  if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
-        if(this.measures[i].successes != 0) thing += "&success=" + this.measures[i].successes;
-        if(this.measures[i].attempts != 0) thing += "&attempt=" + this.measures[i].attempts;
-        console.log(thing);
-      }
-      //localStorage.removeItem("measures");
+      localStorage.removeItem("measures");
       return;
     }
-    //localStorage.setItem("measures", JSON.stringify(this.measures));
+    localStorage.setItem("measures", JSON.stringify(this.measures));
   }
 
   private populateMeasures() {

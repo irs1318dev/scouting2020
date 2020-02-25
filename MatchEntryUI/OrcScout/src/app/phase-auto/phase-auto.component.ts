@@ -18,6 +18,6 @@ export class PhaseAutoComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.task_name == measureName && c.phase == phases.auto);
+    return this.measures.find(c => c.display_name == measureName && c.phase == phases.auto);
   }
 }

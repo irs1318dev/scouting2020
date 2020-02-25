@@ -19,7 +19,7 @@ export class PhaseEndgameComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.task_name == measureName && c.phase == phases.endgame);
+    return this.measures.find(c => c.display_name == measureName && c.phase == phases.endgame);
   }
 
 }
