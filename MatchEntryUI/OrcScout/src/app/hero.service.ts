@@ -9,16 +9,11 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Match } from './match';
 import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
-
-
 import { Component, OnInit, Input } from '@angular/core';
-
-
 
 @Injectable({
   providedIn: 'root',
 })
-
 
 export class HeroService {
 
@@ -121,6 +116,25 @@ export class HeroService {
     }
   }
 
+  // TODO: Arushi, this is where we can post to the server the score.  
+  postScore(team: string, match: string, measures: Measure[])
+  {
+    var urlString = '{{url}}/match/updatescore/{{match}}/{{team}}/{{task}}/{{phase}}/{capability}/{attempt}/{success}/{cycletime}'
+    return ""; // use the urlString above to call using a get (we're going to change this but for not it works) the server.
+    // use the method below as a simple example of how to do this.  BUT you won't need a catch, and you'll want (again for now) a get<any>(). 
+    // You want a get<any> because our server doesn't return valid json when it's succeeding.  A typical rest api would use something like 200, 201, or another valid return
+    // status to indicate that it got a message back and worked.  It also might return a url which you can use to go get the new valid resource. 
+    // we don't do that right now so we'll just call it with any, so it doesn't fail when we get data back from the server and it says, umm... I can't deserialize "hi".
+    // If you do get an exception even with any here, then we need to change the python file, the simplest way to do this would be to create some fake return object in python.
+    // and return that.
+
+    // - in python - 
+    // returnVal = {}
+    // return returnVal
+  }
+
+  // as weird as it seems we post to the DB in the same manner that we get.  We can probably use
+  // query parameters but this works too. 
   getScore(team: string, match: string): Observable<ScoreRecord[]> {
       return this.http.get<ScoreRecord[]>(`${this.scoreUrl}/${team}/${match}`)
         .pipe(
@@ -129,6 +143,7 @@ export class HeroService {
         );
   }
 
+  // TODO: we should probably change this from ID to display name, or another lookup.
   getMeasure(id: number): Observable<Measure> {
     // TODO: send the message _after_ fetching the hero
     this.messageService.add(`HeroService: fetched measure id=${id}`);
