@@ -12,3 +12,16 @@ import { stations } from '../domain-tables/stations';
         red: Alliance[];
         blue: Alliance[];
     }
+
+    export interface ScoreRecord {
+        match: string;
+        team: string;
+        task: string;
+        phase: string;
+        actor: string;
+        measuretype: string;
+        capability: any;
+        attempts: number;
+        successes: number;
+        cycle_times: number;
+    }

@@ -53,11 +53,13 @@ export class MatchScoreCardComponent implements OnInit {
     {
       let team = this.redVBlue.red.find(c => c.station == this.matchScoreCard.selectedTeam.station);
       this.matchScoreCard.selectedTeam.name =team.team;
+      this.matchScoreCard.match.name = team.match;
     }
     else if (this.matchScoreCard.selectedTeam.alliance === alliances.blue)
     {
       let team = this.redVBlue.blue.find(c => c.station == this.matchScoreCard.selectedTeam.station);
       this.matchScoreCard.selectedTeam.name = team.team;
+      this.matchScoreCard.match.name = team.match;
     }
   }
 
@@ -73,11 +75,12 @@ export class MatchScoreCardComponent implements OnInit {
 
   retreiveMeasures(): void {    
     this.matchStarted = true;
-    this.heroService.resetMeasures();
+    this.heroService.startMatch(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name)
+    .subscribe(measures => this.matchScoreCard.score = measures);;
   }
-  
+
   sendMeasures(): void {    
     this.matchStarted = true;
-    this.heroService.resetMeasures();
+    this.heroService.startMatch(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name);
   }
 }
