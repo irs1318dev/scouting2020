@@ -27,6 +27,7 @@ export class HeroService {
   
   private heroesUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
 
+  
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }
@@ -70,6 +71,7 @@ export class HeroService {
     return of(HEROES.find(hero => hero.id === id));
   }
 
+
   clearMeasures(): void {
     if (this.measures == null || this.measures == null)
     {
@@ -79,11 +81,13 @@ export class HeroService {
     localStorage.setItem("measures", JSON.stringify(this.measures));
   }
 
-  saveMeasures(): void {
+
+
+  saveMeasures(Match, MatchScoreCardComponent): void {
     console.log("why not");
     {
       for(let i=0;i<this.measures.length ;i++){
-        // how do we get the current team? 
+        // how do we get the current team? Create match and match score card component?
         // how do we get the current match number?
         let thing = new String("/match/matchteamtask?match=" + Match.id + "&team=" + MatchScoreCardComponent.MatchScoreCard.selectedTeam + "&task=" + this.measures[i].task_name + "&phase=" + this.measures[i].phase);  
       //  if(!measure.capability.isEmpty() && !measure.capability.equals("0")) s += "&capability=" + measure.capability;
