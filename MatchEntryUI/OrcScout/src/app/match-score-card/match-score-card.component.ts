@@ -25,11 +25,11 @@ export class MatchScoreCardComponent implements OnInit {
   matchScoreCard: MatchScoreCard;
   constructor(private heroService: HeroService, private matchService: MatchService) { }
 
-  add(): 
-    void{
+  add(): void{
       console.log("in add");
-      this.heroService.saveMeasures();
-    }
+      // add method not implemented yet. 
+      //this.heroService.saveMeasures();
+  }
   
   @HostListener('window:beforeunload', ['$event']) 
   unloadNotification($event: any) {    
