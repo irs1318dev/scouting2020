@@ -12,8 +12,8 @@ panels = []
 sixteam = va_sixteam.SixTeam(data_source)
 panels.append(sixteam.panel('001-q'))
 
-oneteam_tasks = ['shootUpper', 'climbPosition']
+oneteam_tasks = ['launchOuter', 'climbPosition']
 oneteam = va_oneteam.OneTeam(data_source)
-panels.append(oneteam.panel_1t('1318', ['shootUpper', 'shootLower']))
+panels.append(oneteam.panel_1t('1318', ['launchOuter', 'launchLower']))
 tabs = bk_models.Tabs(tabs=panels)
 bk_plt.curdoc().add_root(tabs)
