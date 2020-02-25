@@ -11,6 +11,7 @@
     <li *ngFor="let red of redvBlue.red">
         <a routerLink="/team/{{red.team}}">
         <span class="badge">{{red.team}}</span> {{red.team}}
+        <span class="badge">{{red.alliance}}</span> {{red.station}}
         </a>
     </li>
     </ul>
@@ -21,6 +22,7 @@
     <li *ngFor="let blue of redvBlue.blue">
         <a routerLink="/team/{{blue.team}}">
         <span class="badge">{{blue.team}}</span> {{blue.team}}
+        <span class="badge">{{blue.alliance}}</span> {{blue.station}}
         </a>
     </li>
     </ul>

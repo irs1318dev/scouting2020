@@ -20,12 +20,16 @@ export class MatchScoreCard {
     match: Match;
     selectedTeam: Team;
     score: Measure[];
+    constructor() {
+        this.match = new Match();        
+    }
 }
 
 export class Measure {
     id: number;
     attempts: number;
     successes: number;
+    display_name: string;
     task_name: string;
     type: string;
     task_id: number;

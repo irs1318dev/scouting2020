@@ -10,7 +10,7 @@ import bokeh.io
 import server.model.connection as smc
 import server.model.event as sme
 import server.config as sc
-import server.view.bokeh
+import server.view.bokeh_res
 
 
 def ranking_df():
@@ -157,7 +157,7 @@ def pages_rankingtable():
     col = blt.column([div1, div2, tabs])
     title = 'Ranking Table: Match ' + match
     # LocalResource needed to load JS and CSS files from local folder
-    res = server.view.bokeh.LocalResource(
+    res = server.view.bokeh_res.LocalResource(
         os.path.join(sc.output_path(), 'static'))
     bokeh.io.save(col, title=title, resources=res)
 

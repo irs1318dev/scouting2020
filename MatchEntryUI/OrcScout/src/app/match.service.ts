@@ -12,7 +12,7 @@ export class MatchService {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
   
-  private heroesUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
+  private matchTeamsUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
 
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
@@ -38,10 +38,15 @@ export class MatchService {
     };
   }
 
-  getRedVBlue(matchNumber: string): Observable<RedVBlue> {
-    return this.http.get<RedVBlue>(`${this.heroesUrl}/${matchNumber}`)
+  getMatch(matchNumber: string): Observable<RedVBlue> {
+    var url = `${this.matchTeamsUrl}`;
+    if (matchNumber !== null && matchNumber !== '')
+    {
+      url += `/${matchNumber}`
+    }
+    return this.http.get<RedVBlue>(url)
       .pipe(
-        tap(_ => this.log('fetched heroes')),
+        tap(_ => this.log('fetched matches')),
         catchError(this.handleError<RedVBlue>('getHeroes'))
       );
   }

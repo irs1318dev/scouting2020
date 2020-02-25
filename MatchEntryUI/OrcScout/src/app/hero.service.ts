@@ -4,7 +4,7 @@ import { Measure } from './match';
 import { HEROES, MEASURES } from './mock-heroes';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
-import { RedVBlue } from './models/redVblue';
+import { RedVBlue, ScoreRecord } from './models/redVblue';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Match } from './match';
@@ -25,7 +25,8 @@ export class HeroService {
   measures: Measure[];
   constructor(private http: HttpClient, private messageService: MessageService) { }
   
-  private heroesUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
+  private matchTeamsUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
+  private scoreUrl = 'http://localhost:8080/match/score';  // URL to web api
 
   
   private log(message: string) {
@@ -52,7 +53,7 @@ export class HeroService {
   }
 
   getRedVBlue(): Observable<RedVBlue> {
-    return this.http.get<RedVBlue>(this.heroesUrl)
+    return this.http.get<RedVBlue>(this.matchTeamsUrl)
       .pipe(
         tap(_ => this.log('fetched heroes')),
         catchError(this.handleError<RedVBlue>('getHeroes'))
@@ -114,9 +115,27 @@ export class HeroService {
     }
   }
 
-  public resetMeasures() {
+  public startMatch(team: string, match: string): Observable<Measure[]> {
     this.measures = MEASURES;
-    this.clearMeasures();
+    this.getScore(team, match).subscribe(c => c.forEach(rec => this.assignMeasure(rec)));
+    return of(this.measures);
+  }
+
+  assignMeasure(record: ScoreRecord){
+    let matchedMeasure = this.measures.find(m => m.task_name === record.task);
+    if (matchedMeasure)
+    {
+      matchedMeasure.successes = record.successes;
+      matchedMeasure.attempts = record.attempts;
+    }
+  }
+
+  getScore(team: string, match: string): Observable<ScoreRecord[]> {
+      return this.http.get<ScoreRecord[]>(`${this.scoreUrl}/${team}/${match}`)
+        .pipe(
+          tap(_ => this.log('fetched score')),
+          catchError(this.handleError<ScoreRecord[]>('getHeroes'))
+        );
   }
 
   getMeasure(id: number): Observable<Measure> {

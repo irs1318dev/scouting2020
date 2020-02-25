@@ -1,7 +1,7 @@
 <div  *ngIf="measure">
     <div *ngIf="measure.type === 'ENUM'">
         <mat-form-field>
-            <mat-label>{{measure.task_name}} </mat-label>
+            <mat-label>{{measure.display_name}} </mat-label>
             <mat-select [(ngModel)]="measure.attempts" >
                 <mat-option color="primary" *ngFor="let option of options" [value]="option.value" convert-to-number>
                     {{option.name}} 
@@ -10,7 +10,7 @@
         </mat-form-field>
     </div>
     <div *ngIf="measure.type === 'SCORE'">
-        <div class="button-header">{{measure.task_name}} {{measure.successes}}/{{measure.attempts}}</div>
+        <div class="button-header">{{measure.display_name}} {{measure.successes}}/{{measure.attempts}}</div>
         <button mat-raised-button color="primary" (click)="hit()">hit</button>
         <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
         
@@ -18,9 +18,9 @@
         <button mat-stroked-button color="basic" (click)="undoMiss()">undo</button>                         
     </div>
     <div *ngIf="measure.type === 'COUNT'">
-        <div class="button-header">{{measure.task_name}} {{measure.successes}}</div>
-        <button mat-raised-button color="primary" (click)="hit()">+</button>
-        <button mat-stroked-button color="primary" (click)="undoHit()">-</button>  
+        <div class="button-header">{{measure.display_name}} {{measure.successes}}</div>
+        <button mat-raised-button color="primary" (click)="hit()">hit</button>
+        <button mat-stroked-button color="primary" (click)="undoHit()">undo</button>  
     </div>
     <div *ngIf="measure.type === 'BOOL'">
         <div>
@@ -28,7 +28,7 @@
                 class="example-margin"
                 [(ngModel)]="measure.attempts"
                 color="primary"
-                convert-to-number>{{measure.task_name}} 
+                convert-to-number>{{measure.display_name}} 
             </mat-slide-toggle>
         </div>
     </div>

@@ -82,6 +82,60 @@ class MatchApi(object):
         return (self.matchDal.match_team_tasks(match, team) +
                 '{end}')
 
+    @cherrypy.expose
+    def updatescore(self, match, team, task, phase, capability='', attempt=0,
+                      success=0, cycle_time=0):
+        """Writes a measure to the database.
+
+        Args:
+            match: (str) Match number, such as "007-q".
+            team: (str) FRC team number
+            task: (str) Task name (season specific) such as "placeGear"
+            phase: (str) Portion of competition to which task applies,
+                such as "claim", "auto", "teleop", etc,
+            capability: "true" if task just records that team or robot
+                has a capability to do something (may be used in pit
+                scouting).
+            attempt: (int) Number of attempts made to complete this
+                task, successful or not.
+            success: (int) Number of successful attempts made to
+                complete this task.
+            cycle_time: (int) Amount of time required to complete a
+                task, in seconds.
+
+        Returns: (str) "hi"
+        """
+        try:
+            self.matchDal.insert_match_task(team, task, match,
+                                            phase, capability,
+                                            attempt, success,
+                                            cycle_time)
+        except KeyError as key:
+            print("--- KeyError: " + str(key) + " ---")
+            return 'KeyError: ' + str(key)
+        return 'hi'
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def score(self, team='error', match=-1):
+        """ Returns measures for a single team in a single match
+
+        Args:
+            team: (str) FRC team number
+            match: Competitiion match number, such as "001-q"
+
+        Returns: (str) Pseudo JSON code. Measures are separated by
+        carriage returns ("\n") and dach measure is a JSON object
+        literal with keys "match", "team", "task", "phase", "actor",
+        "measuretype", "capability", "attempts", "success", and
+        "cycle_times".
+
+        """
+        if match == -1:
+            match = self.eventDal.get_current_match()
+        return self.matchDal.get_score(match, team)
+
+
     """
         Used by android
         """
@@ -121,6 +175,12 @@ class MatchApi(object):
         if match == 'na':
             return self.matchDal.pit_teams()
         return self.matchDal.match_teams(match)
+
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def pitteams(self, match=-1):
+        return self.matchDal.pit_teams()
 
     @cherrypy.expose
     def matches(self, event='na'):

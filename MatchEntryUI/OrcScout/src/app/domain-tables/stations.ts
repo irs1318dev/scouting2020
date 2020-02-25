@@ -1,6 +1,6 @@
 export enum stations {
-    na = 1,
-    one = 2,
-    two = 3,
-    three = 4
+    na = 0,
+    one = 1,
+    two = 2,
+    three = 3
 }

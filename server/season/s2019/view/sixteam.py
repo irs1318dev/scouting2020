@@ -13,7 +13,7 @@ import bokeh.layouts as blt
 import server.model.connection as smc
 import server.config as sc
 import server.model.event as sme
-import server.view.bokeh
+import server.view.bokeh_res
 
 
 def get_df_6t():
@@ -117,7 +117,7 @@ def pages_6t(matches, num_matches=12):
         col = blt.Column(div_top, div_all, row_all, div_l3, row_l3)
         title = 'Six Team Display: Match ' + match
         # LocalResource needed to load JS and CSS files from local folder
-        res = server.view.bokeh.LocalResource(
+        res = server.view.bokeh_res.LocalResource(
             os.path.join(sc.output_path(), 'static'))
         bokeh.io.save(col, title=title, resources=res)
 
