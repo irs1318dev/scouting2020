@@ -21,7 +21,7 @@ def test_data_source():
 
     assert isinstance(data.schedule, pd.DataFrame)
     assert isinstance(data.teams, pd.DataFrame)
-    assert data.teams.shape[1] == 9
+    assert data.teams.shape[1] == 8
     assert data.teams.shape[0] > 20
 
     assert data.event == test_event_name
@@ -49,7 +49,7 @@ def test_panel():
     data = va_data_source.DataSource(event=test_event_name,
                                      season=test_season)
     oneteam = va_oneteam.OneTeam(data)
-    panel = oneteam.panel_1t('1318', ['shootOuter', 'climbPosition'])
+    panel = oneteam.panel_1t('1318', ['launchOuter', 'climbPosition'])
 
 
 def test_enum_measures():
@@ -67,7 +67,7 @@ def test_multiselect():
     data = va_data_source.DataSource(event=test_event_name, season=test_season)
     assert isinstance(data.enum_tasks, list)
     assert len(data.enum_tasks) > 7
-    assert 'shootLower' in data.enum_tasks
+    assert 'launchLower' in data.enum_tasks
 
     oneteam = va_oneteam.OneTeam(data)
-    layout = oneteam.layout_1t('2046', ['shootLower'])
+    layout = oneteam.layout_1t('2046', ['launchLower'])

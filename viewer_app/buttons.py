@@ -1,24 +1,19 @@
-import bokeh.models.widgets as bk_model_widgets
+import bokeh.plotting as bk_plt
+import bokeh.models as bk_models
+
 import viewer_app.data_source as va_data_source
-import viewer_app.main as va_main
-from bokeh.io import curdoc
+import viewer_app.sixteam as va_sixteam
+import viewer_app.oneteam as va_oneteam
 
+data_source = va_data_source.DataSource(event='test_event_2', season='2020')
 
-class DataFile:
+panels = []
 
-    def __init__(self, data):
-        self.data = data
-        self.update_button = bk_model_widgets.Button(label='Update graphs')
+sixteam = va_sixteam.SixTeam(data_source)
+panels.append(sixteam.panel('001-q'))
 
-    def callback_button(self):
-        ds = va_data_source()
-        for obj in va_main.plot_objects:
-            obj.data = ds
-
-    def layout_buttons(self):
-        pass
-
-    def panel_buttons(self):
-        pass
-
-    # update_button = bk_model_widgets.Button(label='Update graphs')
+oneteam_tasks = ['launchOuter', 'climbPosition']
+oneteam = va_oneteam.OneTeam(data_source)
+panels.append(oneteam.panel_1t('1318', ['launchOuter', 'launchLower']))
+tabs = bk_models.Tabs(tabs=panels)
+bk_plt.curdoc().add_root(tabs)

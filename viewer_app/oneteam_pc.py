@@ -18,8 +18,8 @@ class OneTeam:
         match_list = df_matches.match.unique()
         sorted_match = self.measures[self.measures.match.isin(match_list)]
         sorted_match = sorted_match[(sorted_match.team == team)]
-        sorted_task = sorted_match[sorted_match.task.isin(['shootUpper',
-                                                           'shootLower'])]
+        sorted_task = sorted_match[sorted_match.task.isin(['launchOuter',
+                                                           'launchLower'])]
         grouped = sorted_task.groupby(['match', 'task'])
         grouped = grouped.sum()
         grouped = grouped.drop(columns=grouped.columns[1:5])
