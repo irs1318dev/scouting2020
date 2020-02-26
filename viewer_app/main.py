@@ -26,6 +26,10 @@ panels.append(oneteam.panel_1t('1318', ['launchOuter', 'launchLower']))
 file_manager = va_fm.DataFile(data_source)
 panels.append(file_manager.panel_file_management())
 
+plot_object_data = [sixteam.data, oneteam.data]
+file_manager = va_fm.DataFile(data_source)
+panels.append(file_manager.panel_file_management())
+
 tabs = bk_models.Tabs(tabs=panels)
 bk_plt.curdoc().add_root(tabs)
 
