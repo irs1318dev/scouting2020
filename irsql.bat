@@ -1,1 +1,0 @@
-bokeh serve --show viewer_app --args sql
