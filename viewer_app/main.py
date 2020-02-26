@@ -1,3 +1,5 @@
+import sys
+
 import bokeh.plotting as bk_plt
 import bokeh.models as bk_models
 
@@ -6,15 +8,22 @@ import viewer_app.sixteam as va_sixteam
 import viewer_app.rankingtable as va_rankingtable
 import viewer_app.oneteam as va_oneteam
 
-data_source = va_data_source.DataSource(event='test_event_2', season='2020')
-sixteam = va_sixteam.SixTeam(data_source)
-rankingtable = va_rankingtable.rankingTable(data_source)
-panels = []
-sixteam = va_sixteam.SixTeam(data_source)
-panels.append(sixteam.panel('001-q'))
-panels.append(rankingtable.panel())
-oneteam_tasks = ['shootUpper', 'climbPosition']
-oneteam = va_oneteam.OneTeam(data_source)
-panels.append(oneteam.panel_1t('1318', ['shootUpper', 'shootLower', 'climbPosition']))
-tabs = bk_models.Tabs(tabs=panels)
-bk_plt.curdoc().add_root(tabs)
+if sys.argv[1] == 'sql':
+    data_source = va_data_source.DataSource(event='test_event_2', season='2020')
+
+    panels = []
+
+    sixteam = va_sixteam.SixTeam(data_source)
+    rankingtable = va_rankingtable.rankingTable(data_source)
+    panels.append(sixteam.panel('001-q'))
+    panels.append(rankingtable.panel())
+
+    oneteam_tasks = ['launchOuter', 'climbPosition']
+    oneteam = va_oneteam.OneTeam(data_source)
+    panels.append(oneteam.panel_1t('1318', ['launchOuter', 'launchLower']))
+    tabs = bk_models.Tabs(tabs=panels)
+    bk_plt.curdoc().add_root(tabs)
+
+else:
+    print(f'You passed the argument {sys.argv[1]}.')
+    print('No-SQL viewer not yet implemnted.')
