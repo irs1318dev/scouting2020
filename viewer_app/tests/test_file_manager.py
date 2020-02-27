@@ -5,5 +5,6 @@ import pandas as pd
 def test_file_manage():
     file = va_fm.DataFile()
     ds = va_data_source.DataSource()
-    assert ds is not None
+    ds.write_file(fname='test_pickle')
+    ds = va_data_source.DataSource('test_pickle')
 

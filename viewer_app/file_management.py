@@ -2,7 +2,7 @@ import bokeh.models as bk_models
 import bokeh.models.widgets as bk_widgets
 import bokeh.layouts as bk_layouts
 import viewer_app.data_source as va_data_source
-from bokeh.io import curdoc
+import bokeh.io
 
 
 class DataFile:
@@ -15,7 +15,14 @@ class DataFile:
     def callback_button(self):
         # ds1 = va_data_source.DataSource(event='test_event_2', season='2020')
         # check boolean attribute in data_source to see whether it's from a file or sql
-        self.data_source.refresh()
+        if not self.data_source.from_sql:
+            bokeh.io.output_file('file_input.html')
+            file_input = bk_widgets.FileInput()
+            bokeh.io.show(file_input)
+            self.data_source.refresh(fname=file_input.filename)
+
+        else:
+            self.data_source.refresh()
         # for obj in self.data_source:
         #     obj = ds1
 
@@ -25,7 +32,9 @@ class DataFile:
         self.layout = bk_layouts.row(btn)
         return self.layout
 
-    def panel_file_management(self, list_objects):
-        self.layout_file_management(list_objects)
+    def panel_file_management(self):
+                              # list_objects):
+        self.layout_file_management()
+            # list_objects)
         return bk_models.Panel(child=self.layout,
                                title='File Management')
