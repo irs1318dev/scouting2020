@@ -16,7 +16,7 @@ class DataFile:
         # ds1 = va_data_source.DataSource(event='test_event_2', season='2020')
         # check boolean attribute in data_source to see whether it's from a file or sql
         if not self.data_source.from_sql:
-            bokeh.io.output_file('file_input.html')
+            # bokeh.io.output_file('file_input.html')
             file_input = bk_widgets.FileInput()
             bokeh.io.show(file_input)
             self.data_source.refresh(fname=file_input.filename)
