@@ -26,11 +26,6 @@ oneteam_tasks = ['launchOuter', 'climbPosition']
 oneteam = va_oneteam.OneTeam(data_source)
 panels.append(oneteam.panel_1t('1318', ['launchOuter', 'launchLower']))
 
-plot_object_data = [sixteam.data, oneteam.data]
-file_manager = va_fm.DataFile(data_source)
-panels.append(file_manager.panel_file_management())
-    # plot_object_data))
-
 tabs = bk_models.Tabs(tabs=panels)
 bk_plt.curdoc().add_root(tabs)
 
