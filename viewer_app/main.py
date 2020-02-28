@@ -8,17 +8,11 @@ import viewer_app.sixteam as va_sixteam
 import viewer_app.oneteam as va_oneteam
 import viewer_app.file_management as va_fm
 
-<<<<<<< HEAD
 if sys.argv[1] == 'sql':
     data_source = va_data_source.DataSource(event='test_event_2',
                                             season='2020')
 else:
     data_source = va_data_source.DataSource(fname= 'vif.pickle')
-=======
-data_source = va_data_source.DataSource(event='test_event_2', season='2020')
-# data_source.write_file(fname='test_pickle')
-# data_source = va_data_source.DataSource(fname='test_pickle')
->>>>>>> adf101bc0dfcba8ec9bf53a18453357509e48ea6
 
 panels = []
 
