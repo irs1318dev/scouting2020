@@ -31,3 +31,6 @@ def test_manual_Entry():
     select = a.text("DELETE FROM schedules WHERE match = '999'")
     conn.execute(select)
     conn.close()
+
+def test_sched_download():
+    sc.insert_sched("ISDE1", "2020")

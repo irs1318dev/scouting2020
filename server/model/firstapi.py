@@ -56,7 +56,9 @@ def _send_http_request(url):
     token = b"Basic " + base64.b64encode(raw_token)
     hdrs = {"Accept": "application/json", 'Authorization': token}
     req = urllib.request.Request(url, headers=hdrs)
-    return urllib.request.urlopen(req).read()
+    result = urllib.request.urlopen(req)
+    text = result.read()
+    return text
 
 
 def schedule(event, season, level="qual"):
