@@ -134,6 +134,9 @@ class DataSource:
         enum_tasks.sort()
         self.enum_tasks = list(enum_tasks)
 
+        # generate pickle file to clients that don't have sql
+        self.write_file(fname='vif.pickle')
+
         # Return connection to pool.
         smc.pool.putconn(conn)
 
