@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>IRS Scouting Director</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="web/scripts/styles.css">
+		<script type="text/javascript" src="web/scripts/setup.js"></script>
+	</head>
+
+	<body>
+		<h1>IRS Server Maintanance and setup</h1>
+		<h3><a href="/">Scouting Director</a></h3>
+
+		<h3 class = "title">Current Event: {Event}</h3>
+		
+		<fieldset>
+			<input type="text" id="event" name="Event Number" value="{Event}"/>
+			<input type="text" id="year" name="Year" value="{Year}"/>
+			<input type="submit" value="Set Event" onclick="setEvent();"/>
+			<input type="submit" value="Get Event" onclick="getEvent();"/>
+		</fieldset>
+		
+		<h3><a href="/web/sites/directions.html">Server Directions</a></h3>
+
+		<h3><a href="/databaseset">Setup database</a></h3>
+	</body>
+</html>
