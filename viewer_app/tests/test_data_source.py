@@ -45,6 +45,15 @@ def test_write_file():
     assert isinstance(file_data.status, pd.DataFrame)
 
 
+def test_write_vif():
+    path = os.path.abspath(__file__)
+    for _ in range(4):
+        path = os.path.dirname(path)
+    data = va_data_source.DataSource(event=test_event_name,
+                                     season=test_season)
+    fpath = path + r'\vif.pickle'
+    data.write_file(fpath)
+
 def test_panel():
     data = va_data_source.DataSource(event=test_event_name,
                                      season=test_season)

@@ -1,1 +1,0 @@
-python -m bokeh serve --dev --show viewer_app --args data.pickle

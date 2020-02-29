@@ -16,9 +16,6 @@ import pickle
 
 import pandas as pd
 
-import server.model.connection as smc
-import server.model.event as sme
-
 
 class DataSource:
     """Provides DataFrames for plotting to viewer_app classes.
@@ -57,7 +54,7 @@ class DataSource:
                 or the scouting database.
             write_file(): Write the scouting data to a Python pickle file.
     """
-    def __init__(self, fname=None, event=None, season=None):
+    def __init__(self, sql=False, fname=None, event=None, season=None):
         """Initializes a DataSource object."""
         self.measures = None
         self.enum_measures = None
@@ -73,6 +70,15 @@ class DataSource:
         if self.fname is not None:
             self._load_from_file()
         else:
+            # Import non-viewer_app modules only if loading from SQL
+            #   Allows viewer_app to be run as a standalone application
+            #   without the rest of the server files.
+            import server.model.connection
+            import server.model.event
+            global smc, sme
+            smc = server.model.connection
+            sme = server.model.event
+
             self.from_sql = True
             self._load_from_sql()
 
