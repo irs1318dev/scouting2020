@@ -18,7 +18,8 @@ class pointsChart:
 
     def total_pt(self):
         df_temp = self.df
-        df_new = df_temp.filter(['avg_autoLowerPoints', 'avg_autoOuterPoints', 'avg_teleLowerPoints',
+        df_new = df_temp.filter(['avg_autoLowerPoints', 'avg_autoOuterPoints', 'avg_autoInnerPoints',
+                                 'avg_teleInnerPoints', 'avg_teleLowerPoints',
                                  'avg_teleOuterPoints', 'avg_climbpoints', 'avg_parkpoints',
                                  'avg_positionControlPoints', 'avg_rotationControlPoints'], axis=1)
         points_cds = bmodels.ColumnDataSource(df_new)
@@ -31,7 +32,7 @@ class pointsChart:
         p = plt.figure(title='Points Chart', x_range=points_cds.data[tm_col_name],
                        plot_width=1100, plot_height=350, tooltips=tooltips, toolbar_location="above")
         hr = p.vbar_stack(task, x=tm_col_name, width=0.5,
-                          source=points_cds, color=bpalettes.RdBu8)
+                          source=points_cds, color=bpalettes.RdBu10)
         legend = bokeh.models.Legend(items=[(x, [hr[task.index(x)]]) for x in task], location=(0, 0))
         p.add_layout(legend, 'right')
         p.xaxis.major_label_orientation = 3.14 / 4

@@ -24,7 +24,7 @@ class rankingTable:
         df = dft.filter(['team', 'matches_played'])
         dftotal = self.data.enum_measures.copy()
         dfauto = dftotal[dftotal.phase == 'auto']
-        shootertasks = ['launchLower', 'launchOuter']
+        shootertasks = ['launchLower', 'launchOuter', 'launchInner']
         dfautotask = dfauto[dfauto.task.isin(shootertasks)]
         dfautotask = dfautotask.groupby(['team', 'task']).sum()
         dfautotask = dfautotask.filter(['team', 'task', 'successes'])
@@ -37,12 +37,16 @@ class rankingTable:
         total['matches'] = df['matches_played']
         total['autoLower'] = dfautotask['launchLower']
         total['autoOuter'] = dfautotask['launchOuter']
+        total['autoInner'] = dfautotask['launchInner']
         total = total.fillna(0)
         total['teleLower'] = total['launchLower'] - total['autoLower']
         total['teleOuter'] = total['launchOuter'] - total['autoOuter']
+        total['teleInner'] = total['launchInner'] - total['autoInner']
         total['movePoints'] = total['movedAuto'] * 5
         total['autoLowerPoints'] = total['autoLower'] * 2
         total['autoOuterPoints'] = total['autoOuter'] * 4
+        total['autoInnerPoints'] = total['autoInner'] * 6
+        total['teleInnerPoints'] = total['autoInner'] * 3
         total['teleLowerPoints'] = total['teleLower'] * 1
         total['teleOuterPoints'] = total['teleOuter'] * 2
         total['climb'] = total['climbPosition_Center'] + total['climbPosition_Side']
@@ -51,7 +55,8 @@ class rankingTable:
         total['positionControlPoints'] = total['positionControl'] * 25
         total['rotationControlPoints'] = total['rotationControl'] * 15
         total['points'] = (total['autoLowerPoints'] + total['autoOuterPoints'] + total['teleLowerPoints'] +
-                           total['teleOuterPoints'] + total['climb'] + total['climbpoints'] + total['parkpoints'] +
+                           total['teleOuterPoints'] + total['autoInnerPoints'] + total['teleInnerPoints'] +
+                           total['climb'] + total['climbpoints'] + total['parkpoints'] +
                            total['positionControlPoints'] + total['rotationControlPoints'])
         average = total.div(total.matches, axis=0)
         for x in range(len(average.columns)):
@@ -67,9 +72,11 @@ class rankingTable:
             bmw.TableColumn(field='team', title='Team'),
             bmw.TableColumn(field='avg_points', title='Average Points', formatter=fixed2),
             bmw.TableColumn(field='avg_autoLower', title='Average Shoot Lower Auto', formatter=fixed2),
-            bmw.TableColumn(field='avg_autoOuter', title='Average Shoot Upper Auto', formatter=fixed2),
+            bmw.TableColumn(field='avg_autoOuter', title='Average Shoot Outer Auto', formatter=fixed2),
+            bmw.TableColumn(field='avg_autoInner', title='Average Shoot Inner Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_teleLower', title='Average Shoot Lower Teleop', formatter=fixed2),
-            bmw.TableColumn(field='avg_teleOuter', title='Average Shoot Upper Teleop', formatter=fixed2),
+            bmw.TableColumn(field='avg_teleOuter', title='Average Shoot Outer Teleop', formatter=fixed2),
+            bmw.TableColumn(field='avg_teleInner', title='Average Shoot Inner Teleop', formatter=fixed2),
             bmw.TableColumn(field='avg_launchLower', title='Average Shoot Lower', formatter=fixed2),
             bmw.TableColumn(field='avg_launchOuter', title='Average Shoot Upper', formatter=fixed2),
             bmw.TableColumn(field='positionControl', title='Total position control', formatter=fixed2),

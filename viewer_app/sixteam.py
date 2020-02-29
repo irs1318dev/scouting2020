@@ -22,7 +22,7 @@ class SixTeam:
     def callback_6t(self, attr, old, new):
         self.layout.children[1] = self.total_6t(new)
 
-    def df_new_6t(self, alliance, match, tasks=['launchOuter', 'launchLower']):
+    def df_new_6t(self, alliance, match, tasks=['launchOuter', 'launchLower', 'launchInner']):
         df_teams = self.data.schedule[(self.data.schedule.match == match)]
         teams_list = df_teams[(df_teams.alliance == alliance)].team.unique()
         sorted_team = self.data.measures[
