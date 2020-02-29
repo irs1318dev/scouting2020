@@ -2,6 +2,7 @@ import json
 import os
 import pandas
 import sqlalchemy
+import psycopg2
 
 from sqlalchemy import text
 
@@ -27,7 +28,7 @@ def insert_sched(event, season, level='qual', fileName = '-1'):
     process_sched(event, season, sched_json, level)
 
 
-def set_teams():
+def set_teams(season):
     conn = smc.engine.connect()
     sql = text("SELECT name FROM teams;")
     teams = conn.execute(sql).fetchall()
@@ -38,7 +39,7 @@ def set_teams():
     for name in teams:
 
         try:
-            names = json.loads(smf.get_team_names(name))
+            names = json.loads(smf.get_team_names(name, season))
             sql = text("UPDATE teams SET long_name = :long_name WHERE name = :name;").bindparams(
                 long_name=names["teams"][0]["nameShort"], name=name)
             conn.execute(sql)
@@ -80,8 +81,24 @@ def process_sched(event, season, sched_json, level='qual'):
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
             smu.upsert("dates", "name", date)
-    set_teams() 
 
+    # set_teams()
+    url = (f"https://frc-api.firstinspires.org/v2.0/{season}"
+           f"/teams?eventCode={event}")
+    teams_json = smf._send_http_request(url)
+    teams = pandas.DataFrame(json.loads(teams_json)['teams'])
+    conn = smc.engine.connect()
+    for row in teams.itertuples():
+        sql = text(
+            "UPDATE teams SET long_name = :long_name WHERE name = :name;").bindparams(
+            long_name=row.nameShort, name=str(row.teamNumber))
+    try:
+        conn.execute(sql)
+    except ValueError:
+        pass
+    except:
+        pass
+    conn.close()
 
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
 def manual_Entry(file, event, season):
