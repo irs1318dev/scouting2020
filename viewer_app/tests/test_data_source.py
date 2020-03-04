@@ -6,7 +6,7 @@ import pandas as pd
 import viewer_app.data_source as va_data_source
 import viewer_app.oneteam as va_oneteam
 
-test_event_name = 'test_event_2'
+test_event_name = 'wasno'
 test_season = '2020'
 test_file_name = r'\data_write_test.pickle'
 

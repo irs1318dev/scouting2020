@@ -26,7 +26,7 @@ class SixTeam:
         df_teams = self.data.schedule[(self.data.schedule.match == match)]
         teams_list = df_teams[(df_teams.alliance == alliance)].team.unique()
         sorted_team = self.data.measures[
-            self.data.measures.team.isin(teams_list)]
+        self.data.measures.team.isin(teams_list)]
         sorted_task = sorted_team[sorted_team.task.isin(tasks)]
         grouped = sorted_task.groupby(['task', 'team'])
         grouped = grouped.sum()

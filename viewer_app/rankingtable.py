@@ -35,15 +35,15 @@ class rankingTable:
         total = total.unstack()
         total.columns = total.columns.droplevel()
         total['matches'] = df['matches_played']
-        total['autoLower'] = dfautotask['launchLower']
+        # total['autoLower'] = dfautotask['launchLower']
         total['autoOuter'] = dfautotask['launchOuter']
         total['autoInner'] = dfautotask['launchInner']
         total = total.fillna(0)
-        total['teleLower'] = total['launchLower'] - total['autoLower']
+        total['teleLower'] = total['launchLower']
         total['teleOuter'] = total['launchOuter'] - total['autoOuter']
         total['teleInner'] = total['launchInner'] - total['autoInner']
         total['movePoints'] = total['movedAuto'] * 5
-        total['autoLowerPoints'] = total['autoLower'] * 2
+        # total['autoLowerPoints'] = total['autoLower'] * 2
         total['autoOuterPoints'] = total['autoOuter'] * 4
         total['autoInnerPoints'] = total['autoInner'] * 6
         total['teleInnerPoints'] = total['autoInner'] * 3
@@ -52,12 +52,12 @@ class rankingTable:
         total['climb'] = total['climbPosition_Center'] + total['climbPosition_Side']
         total['climbpoints'] = total['climb'] * 25
         total['parkpoints'] = total['climbPosition_Park'] * 5
-        total['positionControlPoints'] = total['positionControl'] * 25
-        total['rotationControlPoints'] = total['rotationControl'] * 15
-        total['points'] = (total['autoLowerPoints'] + total['autoOuterPoints'] + total['teleLowerPoints'] +
+        # total['positionControlPoints'] = total['positionControl'] * 25
+        # total['rotationControlPoints'] = total['rotationControl'] * 15
+        total['points'] = (total['autoOuterPoints'] + total['teleLowerPoints'] +
                            total['teleOuterPoints'] + total['autoInnerPoints'] + total['teleInnerPoints'] +
-                           total['climb'] + total['climbpoints'] + total['parkpoints'] +
-                           total['positionControlPoints'] + total['rotationControlPoints'])
+                           total['climb'] + total['climbpoints'] + total['parkpoints'])
+                           # total['positionControlPoints'] + total['rotationControlPoints'])
         average = total.div(total.matches, axis=0)
         for x in range(len(average.columns)):
             average.rename(columns={average.columns[x]: ('avg_' + average.columns[x])}, inplace=True)
@@ -71,7 +71,7 @@ class rankingTable:
         cols = [
             bmw.TableColumn(field='team', title='Team'),
             bmw.TableColumn(field='avg_points', title='Average Points', formatter=fixed2),
-            bmw.TableColumn(field='avg_autoLower', title='Average Shoot Lower Auto', formatter=fixed2),
+            # bmw.TableColumn(field='avg_autoLower', title='Average Shoot Lower Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_autoOuter', title='Average Shoot Outer Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_autoInner', title='Average Shoot Inner Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_teleLower', title='Average Shoot Lower Teleop', formatter=fixed2),
@@ -79,8 +79,8 @@ class rankingTable:
             bmw.TableColumn(field='avg_teleInner', title='Average Shoot Inner Teleop', formatter=fixed2),
             bmw.TableColumn(field='avg_launchLower', title='Average Shoot Lower', formatter=fixed2),
             bmw.TableColumn(field='avg_launchOuter', title='Average Shoot Upper', formatter=fixed2),
-            bmw.TableColumn(field='positionControl', title='Total position control', formatter=fixed2),
-            bmw.TableColumn(field='rotationControl', title='Total Rotation Control', formatter=fixed2),
+            # bmw.TableColumn(field='positionControl', title='Total position control', formatter=fixed2),
+            # bmw.TableColumn(field='rotationControl', title='Total Rotation Control', formatter=fixed2),
             bmw.TableColumn(field='movedAuto', title='Total moved auto', formatter=fixed2),
             bmw.TableColumn(field='climb', title='Total Climbs', formatter=fixed2)
         ]
