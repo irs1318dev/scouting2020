@@ -35,6 +35,9 @@ class SixTeam:
         df_unstacked.columns = df_unstacked.columns.droplevel()
         df_fil = df_unstacked.fillna(0)
         df_fil.loc['Total PC', :] = list(df_fil.sum())
+        for team in teams_list:
+            if team not in df_fil.columns:
+                df_fil[team] = 0
         return df_fil
 
     def total_6t(self, match):
