@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Match } from './match';
 import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
 import { Component, OnInit, Input } from '@angular/core';
+import { phases } from './domain-tables/phases';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ export class HeroService {
   
   private matchTeamsUrl = 'http://localhost:8080/match/matchteams';  // URL to web api
   private scoreUrl = 'http://localhost:8080/match/score';  // URL to web api
+  private updateScoreUrl = 'http://localhost:8080/match/updatescore';  // URL to web api
 
   
   private log(message: string) {
@@ -117,10 +119,18 @@ export class HeroService {
   }
 
   // TODO: Arushi, this is where we can post to the server the score.  
-  postScore(team: string, match: string, measures: Measure[])
+  public postScore(team: string, match: string): void
   {
-    var urlString = '{{url}}/match/updatescore/{{match}}/{{team}}/{{task}}/{{phase}}/{capability}/{attempt}/{success}/{cycletime}'
-    return ""; // use the urlString above to call using a get (we're going to change this but for not it works) the server.
+    for (let meas of this.measures)
+    {
+      var urlString = `${this.updateScoreUrl}/${match}/${team}/${meas.task_name}/${phases[meas.phase]}/0/${meas.attempts}/${meas.successes}`;     
+      
+      this.http.post(urlString, "")
+      .pipe(
+        tap(_ => this.log('update score')),
+        catchError(this.handleError('getHeroes')))
+      .subscribe();
+    }// use the urlString above to call using a get (we're going to change this but for not it works) the server.
     // use the method below as a simple example of how to do this.  BUT you won't need a catch, and you'll want (again for now) a get<any>(). 
     // You want a get<any> because our server doesn't return valid json when it's succeeding.  A typical rest api would use something like 200, 201, or another valid return
     // status to indicate that it got a message back and worked.  It also might return a url which you can use to go get the new valid resource. 
@@ -136,11 +146,13 @@ export class HeroService {
   // as weird as it seems we post to the DB in the same manner that we get.  We can probably use
   // query parameters but this works too. 
   getScore(team: string, match: string): Observable<ScoreRecord[]> {
-      return this.http.get<ScoreRecord[]>(`${this.scoreUrl}/${team}/${match}`)
+      let results = this.http.get<ScoreRecord[]>(`${this.scoreUrl}/${team}/${match}`)
         .pipe(
           tap(_ => this.log('fetched score')),
           catchError(this.handleError<ScoreRecord[]>('getHeroes'))
         );
+        
+      return results;
   }
 
   // TODO: we should probably change this from ID to display name, or another lookup.

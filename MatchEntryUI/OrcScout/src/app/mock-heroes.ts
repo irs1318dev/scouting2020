@@ -27,7 +27,7 @@ export const MEASURES: Measure[] = [
   { id: 0x07, type: 'SCORE', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto, task_name: 'shootUpper', display_name: 'Shoot Lower' },
   { id: 0x08, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.auto,  task_name: 'shootInner', display_name: 'Shoot Inner' },
   
-  { id: 0x09, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,  task_name: '', display_name: 'Defense' },
+  { id: 0x09, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,  task_name: 'defense', display_name: 'Defense' },
   { id: 0x0a, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,  task_name: '', display_name: 'Defended Against' },
   { id: 0x0b, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,  task_name: '', display_name: 'CP Rotation' },
   { id: 0x0c, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,  task_name: '', display_name: 'CP Position' },

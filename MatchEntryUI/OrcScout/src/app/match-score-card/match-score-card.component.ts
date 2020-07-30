@@ -81,11 +81,12 @@ export class MatchScoreCardComponent implements OnInit {
   retreiveMeasures(): void {    
     this.matchStarted = true;
     this.heroService.startMatch(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name)
-    .subscribe(measures => this.matchScoreCard.score = measures);;
+    .subscribe(measures => this.matchScoreCard.score = measures);
   }
 
   sendMeasures(): void {    
     this.matchStarted = false;
+    this.heroService.postScore(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name)
     // WIP, does not yet  measures.  
   }
 }
