@@ -5,10 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { HeroesComponent } from './heroes/heroes.component';
-import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { MessagesComponent } from './messages/messages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatchComponent } from './match/match.component';
 import { MeasureComponent } from './measure/measure.component';
 import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
@@ -21,12 +18,11 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSlideToggleModu
   
 import { PhaseTeleopComponent } from './phase-teleop/phase-teleop.component';
 import { PhaseEndgameComponent } from './phase-endgame/phase-endgame.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeroesComponent,
-    HeroDetailComponent,
     MessagesComponent,
     DashboardComponent,
     MatchComponent,

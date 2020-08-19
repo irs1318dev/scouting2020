@@ -1,7 +1,6 @@
 import { Injectable, HostListener } from '@angular/core';
-import { Hero } from './hero';
 import { Measure } from './match';
-import { HEROES, MEASURES } from './mock-heroes';
+import { MEASURES } from './mock-heroes';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { RedVBlue, ScoreRecord } from './models/redVblue';
@@ -56,19 +55,6 @@ export class HeroService {
         catchError(this.handleError<RedVBlue>('getHeroes'))
       );
   }
-
-  getHeroes(): Observable<Hero[]> {
-    // TODO: send the message _after_ fetching the heroes
-    this.messageService.add('HeroService: fetched heroes');
-    return of(HEROES);
-  }
-
-  getHero(id: number): Observable<Hero> {
-    // TODO: send the message _after_ fetching the hero
-    this.messageService.add(`HeroService: fetched hero id=${id}`);
-    return of(HEROES.find(hero => hero.id === id));
-  }
-
 
   clearMeasures(): void {
     if (this.measures == null || this.measures == null)
