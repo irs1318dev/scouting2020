@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Match } from './match';
 import { MatchScoreCardComponent } from './match-score-card/match-score-card.component';
 import { Component, OnInit, Input } from '@angular/core';
-import { phases } from './domain-tables/phases';
+import { phases, PhasesLabel } from './domain-tables/phases';
 
 @Injectable({
   providedIn: 'root',
@@ -110,7 +110,7 @@ export class HeroService {
   }
 
   assignMeasure(record: ScoreRecord){
-    let matchedMeasure = this.measures.find(m => m.task_name === record.task);
+    let matchedMeasure = this.measures.find(m => m.task_name === record.task && PhasesLabel.get(m.phase) === record.phase);
     if (matchedMeasure)
     {
       matchedMeasure.successes = record.successes;
