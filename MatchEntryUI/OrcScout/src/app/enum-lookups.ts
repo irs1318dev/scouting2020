@@ -1,4 +1,3 @@
-import { Hero } from './hero';
 import { Measure } from './match';
 
 export class EnumOption {
