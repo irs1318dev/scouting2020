@@ -109,7 +109,7 @@ export class HeroService {
   {
     for (let meas of this.measures)
     {
-      var urlString = `${this.updateScoreUrl}/${match}/${team}/${meas.task_name}/${phases[meas.phase]}/0/${this.getAttempts(meas.attempts)}/${meas.successes}`;     
+      var urlString = `${this.updateScoreUrl}/${match}/${team}/${meas.task_name}/${phases[meas.phase]}/${meas.capability}/${this.getAttempts(meas.attempts)}/${meas.successes}`;     
       
       this.http.post(urlString, "")
       .pipe(

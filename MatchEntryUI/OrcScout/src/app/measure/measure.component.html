@@ -2,8 +2,8 @@
     <div *ngIf="measure.type === 'ENUM'">
         <mat-form-field>
             <mat-label>{{measure.display_name}} </mat-label>
-            <mat-select [(ngModel)]="measure.attempts" >
-                <mat-option color="primary" *ngFor="let option of options" [value]="option.value" convert-to-number>
+            <mat-select [(ngModel)]="measure.capability" >
+                <mat-option color="primary" *ngFor="let option of options" [value]="option.name">
                     {{option.name}} 
                 </mat-option>
             </mat-select>

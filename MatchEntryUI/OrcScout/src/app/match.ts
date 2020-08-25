@@ -35,4 +35,5 @@ export class Measure {
     task_id: number;
     actor: actors;
     phase: phases;
+    capability: string;
 }
