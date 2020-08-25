@@ -27,7 +27,7 @@ export class MatchScoreCard {
 
 export class Measure {
     id: number;
-    attempts: number;
+    attempts: number | boolean;
     successes: number;
     display_name: string;
     task_name: string;

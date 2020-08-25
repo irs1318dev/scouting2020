@@ -109,7 +109,7 @@ export class HeroService {
   {
     for (let meas of this.measures)
     {
-      var urlString = `${this.updateScoreUrl}/${match}/${team}/${meas.task_name}/${phases[meas.phase]}/0/${meas.attempts}/${meas.successes}`;     
+      var urlString = `${this.updateScoreUrl}/${match}/${team}/${meas.task_name}/${phases[meas.phase]}/0/${this.getAttempts(meas.attempts)}/${meas.successes}`;     
       
       this.http.post(urlString, "")
       .pipe(
@@ -131,6 +131,21 @@ export class HeroService {
 
   // as weird as it seems we post to the DB in the same manner that we get.  We can probably use
   // query parameters but this works too. 
+
+  getAttempts(attempts: number | boolean): number{
+    if(typeof attempts === "number"){
+        return attempts;
+    }
+    
+    if(typeof attempts === "boolean"){
+      if(attempts){
+        return 1;
+      }
+      return 0;
+    }
+  }
+
+
   getScore(team: string, match: string): Observable<ScoreRecord[]> {
       let results = this.http.get<ScoreRecord[]>(`${this.scoreUrl}/${team}/${match}`)
         .pipe(
