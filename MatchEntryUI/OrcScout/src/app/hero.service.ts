@@ -101,6 +101,7 @@ export class HeroService {
     {
       matchedMeasure.successes = record.successes;
       matchedMeasure.attempts = record.attempts;
+      matchedMeasure.capability = record.capability;
     }
   }
 

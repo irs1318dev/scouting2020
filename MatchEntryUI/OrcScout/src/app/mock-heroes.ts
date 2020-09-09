@@ -25,10 +25,10 @@ export const MEASURES: Measure[] = [
   { id: 0x11, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop, capability: '', task_name: 'shootInner', display_name: 'Shoot Inner' },
   { id: 0x12, type: 'COUNT', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.teleop,capability: '', task_name: 'passPowerCells', display_name: 'Pass' },
 
-  { id: 0x13, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'disabled', display_name: 'Disabled' },
-  { id: 0x14, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'tempDisabled', display_name: 'Temp. Disabled' },
-  { id: 0x15, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'noShow', display_name: 'No Show' },
-  { id: 0x16, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'fallOver', display_name: 'Fall Over' },
-  { id: 0x17, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'climbPosition', display_name: 'Climb' },
-  { id: 0x18, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.endgame, capability: '', task_name: 'isLevel', display_name: 'Is Level' },
+  { id: 0x13, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'disabled', display_name: 'Disabled' },
+  { id: 0x14, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'tempDisabled', display_name: 'Temp. Disabled' },
+  { id: 0x15, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'noShow', display_name: 'No Show' },
+  { id: 0x16, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'fallOver', display_name: 'Fall Over' },
+  { id: 0x17, type: 'ENUM', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'climbPosition', display_name: 'Climb' },
+  { id: 0x18, type: 'BOOL', attempts: 0, task_id:0, successes: 0,  actor: actors.robot, phase: phases.finish, capability: '', task_name: 'isLevel', display_name: 'Is Level' },
 ];

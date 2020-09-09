@@ -17,7 +17,7 @@ import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSlideToggleModu
   from '@angular/material';
   
 import { PhaseTeleopComponent } from './phase-teleop/phase-teleop.component';
-import { PhaseEndgameComponent } from './phase-endgame/phase-endgame.component';
+import { PhaseEndgameComponent } from './phase-finish/phase-finish.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({

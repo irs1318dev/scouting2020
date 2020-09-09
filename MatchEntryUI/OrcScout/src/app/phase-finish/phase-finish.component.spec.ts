@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhaseEndgameComponent } from './phase-endgame.component';
+import { PhaseEndgameComponent } from './phase-finish.component';
 
 describe('PhaseEndgameComponent', () => {
   let component: PhaseEndgameComponent;

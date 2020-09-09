@@ -3,7 +3,7 @@ export enum phases {
     claims = 2,
     auto = 3,
     teleop = 4,
-    endgame = 5
+    finish = 5
 }
 
 export const PhasesLabel = new Map<number, string>([
@@ -11,5 +11,5 @@ export const PhasesLabel = new Map<number, string>([
     [phases.claims, 'claims'],
     [phases.auto, 'auto'],
     [phases.teleop, 'teleop'],
-    [phases.endgame, 'endgame']
+    [phases.finish, 'finish']
   ]);

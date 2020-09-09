@@ -4,9 +4,9 @@ import { phases } from '../domain-tables/phases';
 
 
 @Component({
-  selector: 'app-phase-endgame',
-  templateUrl: './phase-endgame.component.html',
-  styleUrls: ['./phase-endgame.component.less']
+  selector: 'app-phase-finish',
+  templateUrl: './phase-finish.component.html',
+  styleUrls: ['./phase-finish.component.less']
 })
 export class PhaseEndgameComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class PhaseEndgameComponent implements OnInit {
   }
 
   getMeasure(measureName:string): Measure{
-    return this.measures.find(c => c.display_name == measureName && c.phase == phases.endgame);
+    return this.measures.find(c => c.display_name == measureName && c.phase == phases.finish);
   }
 
 }
