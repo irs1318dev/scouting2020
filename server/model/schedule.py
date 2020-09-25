@@ -80,7 +80,7 @@ def process_sched(event, season, sched_json, level='qual'):
             conn.close()
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
-            smu.upsert("dates", "name", date)
+            # smu.upsert("dates", "name", date)
 
     # set_teams()
     url = (f"https://frc-api.firstinspires.org/v2.0/{season}"

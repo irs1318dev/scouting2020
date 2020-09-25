@@ -36,9 +36,9 @@ def build_dicts(dim_table):
     return id_to_name, name_to_id
 
 
-date_names, date_ids = build_dicts("dates")
+# date_names, date_ids = build_dicts("dates")
 event_names, event_ids = build_dicts("events")
-level_names, level_ids = build_dicts("levels")
+# level_names, level_ids = build_dicts("levels")
 match_names, match_ids = build_dicts("matches")
 alliance_names, alliance_ids = build_dicts("alliances")
 team_names, team_ids = build_dicts("teams")
@@ -63,9 +63,9 @@ def rebuild_dicts():
     global phase_names, phase_ids, attempt_names, attempt_ids
     global reason_names, reason_ids, task_option_names, task_option_ids
 
-    date_names, date_ids = build_dicts("dates")
+    # date_names, date_ids = build_dicts("dates")
     event_names, event_ids = build_dicts("events")
-    level_names, level_ids = build_dicts("levels")
+    # level_names, level_ids = build_dicts("levels")
     match_names, match_ids = build_dicts("matches")
     alliance_names, alliance_ids = build_dicts("alliances")
     team_names, team_ids = build_dicts("teams")
