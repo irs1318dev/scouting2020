@@ -31,7 +31,7 @@ class pointsChart:
         p = plt.figure(title='Points Chart', x_range=points_cds.data[tm_col_name],
                        plot_width=1100, plot_height=350, tooltips=tooltips, toolbar_location="above")
         hr = p.vbar_stack(task, x=tm_col_name, width=0.5,
-                          source=points_cds, color=bpalettes.Catagory10[7])
+                          source=points_cds, color=bpalettes.Category10[7])
         legend = bokeh.models.Legend(items=[(x, [hr[task.index(x)]]) for x in task], location=(0, 0))
         p.add_layout(legend, 'right')
         p.xaxis.major_label_orientation = 3.14 / 4

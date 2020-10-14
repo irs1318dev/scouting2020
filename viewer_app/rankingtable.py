@@ -7,7 +7,7 @@ import bokeh.plotting as plt
 import bokeh.palettes as bpalettes
 import bokeh.transform as btransform
 import bokeh.io
-
+import numpy as np
 
 class rankingTable:
 
@@ -18,6 +18,16 @@ class rankingTable:
         self.layout = None
 
     def df_ranktable(self):
+        element_list = ['card', 'climbPosition_Center', 'climbPosition_Park', 'climbPosition.Rendezvous',
+                        'climbPosition_Side', 'collided', 'crossOpponentSector', 'defendedAgainst',
+                        'defense', 'disabled', 'fallOver', 'getFoul', 'isActiveLevel', 'isLevel', 'movedAuto',
+                        'noShow', 'pickupPowerCellsG', 'pickupPowerCellsL', 'pickupPowerCellsS', 'pickupPowerCellsT',
+                        'positionControl', ' powerCellsLoaded', 'rotationControl', 'launchInner', 'launchLower',
+                        'launchPowerCellsInnerBI', 'launchPowerCellsLowerBI', 'launchPowerCellsUpperBI', 'launchUpper',
+                        'startingPosition_Cen', 'startingPosition_Goal','startingPosition_Load', 'startingPositionLoading',
+                        'tempDisabled', 'teleLower', 'matches', 'autoLower']
+
+
         dft = self.data.teams.copy()
         dft = dft.rename(columns={'name': 'team'})
         dft = dft.set_index(['team'])
@@ -35,7 +45,23 @@ class rankingTable:
         total = total.unstack()
         total.columns = total.columns.droplevel()
         total['matches'] = df['matches_played']
-        # total['autoLower'] = dfautotask['launchLower']
+
+        column = total.columns
+
+        missing = []
+        for element in element_list:
+            found_element = False
+            for col in total.columns:
+                if (col == element):
+                    found_element = True
+            if (found_element == False):
+                missing.append(element)
+
+        for missed in missing:
+            total[missed] = np.nan
+
+
+        total['autoLower'] = dfautotask['launchLower']
         total['autoOuter'] = dfautotask['launchOuter']
         total['autoInner'] = dfautotask['launchInner']
         total = total.fillna(0)
@@ -43,7 +69,7 @@ class rankingTable:
         total['teleOuter'] = total['launchOuter'] - total['autoOuter']
         total['teleInner'] = total['launchInner'] - total['autoInner']
         total['movePoints'] = total['movedAuto'] * 5
-        # total['autoLowerPoints'] = total['autoLower'] * 2
+        total['autoLowerPoints'] = total['autoLower'] * 2
         total['autoOuterPoints'] = total['autoOuter'] * 4
         total['autoInnerPoints'] = total['autoInner'] * 6
         total['teleInnerPoints'] = total['autoInner'] * 3
@@ -52,12 +78,12 @@ class rankingTable:
         total['climb'] = total['climbPosition_Center'] + total['climbPosition_Side']
         total['climbpoints'] = total['climb'] * 25
         total['parkpoints'] = total['climbPosition_Park'] * 5
-        # total['positionControlPoints'] = total['positionControl'] * 25
-        # total['rotationControlPoints'] = total['rotationControl'] * 15
+        total['positionControlPoints'] = total['positionControl'] * 25
+        total['rotationControlPoints'] = total['rotationControl'] * 15
         total['points'] = (total['autoOuterPoints'] + total['teleLowerPoints'] +
                            total['teleOuterPoints'] + total['autoInnerPoints'] + total['teleInnerPoints'] +
-                           total['climb'] + total['climbpoints'] + total['parkpoints'])
-                           # total['positionControlPoints'] + total['rotationControlPoints'])
+                           total['climb'] + total['climbpoints'] + total['parkpoints'] +
+                           total['positionControlPoints'] + total['rotationControlPoints'])
         average = total.div(total.matches, axis=0)
         for x in range(len(average.columns)):
             average.rename(columns={average.columns[x]: ('avg_' + average.columns[x])}, inplace=True)
@@ -71,7 +97,7 @@ class rankingTable:
         cols = [
             bmw.TableColumn(field='team', title='Team'),
             bmw.TableColumn(field='avg_points', title='Average Points', formatter=fixed2),
-            # bmw.TableColumn(field='avg_autoLower', title='Average Shoot Lower Auto', formatter=fixed2),
+            bmw.TableColumn(field='avg_autoLower', title='Average Shoot Lower Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_autoOuter', title='Average Shoot Outer Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_autoInner', title='Average Shoot Inner Auto', formatter=fixed2),
             bmw.TableColumn(field='avg_teleLower', title='Average Shoot Lower Teleop', formatter=fixed2),
@@ -79,8 +105,8 @@ class rankingTable:
             bmw.TableColumn(field='avg_teleInner', title='Average Shoot Inner Teleop', formatter=fixed2),
             bmw.TableColumn(field='avg_launchLower', title='Average Shoot Lower', formatter=fixed2),
             bmw.TableColumn(field='avg_launchOuter', title='Average Shoot Upper', formatter=fixed2),
-            # bmw.TableColumn(field='positionControl', title='Total position control', formatter=fixed2),
-            # bmw.TableColumn(field='rotationControl', title='Total Rotation Control', formatter=fixed2),
+            bmw.TableColumn(field='positionControl', title='Total position control', formatter=fixed2),
+            bmw.TableColumn(field='rotationControl', title='Total Rotation Control', formatter=fixed2),
             bmw.TableColumn(field='movedAuto', title='Total moved auto', formatter=fixed2),
             bmw.TableColumn(field='climb', title='Total Climbs', formatter=fixed2)
         ]
