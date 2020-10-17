@@ -38,13 +38,13 @@ export class MatchScoreCardComponent implements OnInit {
   
   ngOnInit() {
     this.matchStarted = false;
-    this.getRedVBlue();
     this.stations = DOMAINOPTIONS['stations'];
     this.alliances = DOMAINOPTIONS['alliances'];
     this.matchScoreCard = new MatchScoreCard();
     this.matchScoreCard.selectedTeam = new Team();
     this.matchScoreCard.selectedTeam.alliance = alliances.na; 
     this.matchScoreCard.selectedTeam.station = stations.na; 
+    this.getRedVBlue();
     this.getMeasures();
     this. getAllianceName();
   }
@@ -69,8 +69,15 @@ export class MatchScoreCardComponent implements OnInit {
   }
 
   getRedVBlue(): void {
-    this.matchService.getMatch(null)
+    let matchName = "";
+    if (this.matchScoreCard && this.matchScoreCard.match && this.matchScoreCard.match.name) {
+      matchName = this.matchScoreCard.match.name;
+    }
+    
+    this.matchService.getMatch(matchName)
         .subscribe(redVBlue => this.redVBlue= redVBlue);
+    this.matchScoreCard.selectedTeam.station = stations.na;
+    this.matchScoreCard.selectedTeam.alliance = alliances.na;
   }
 
   getMeasures(): void {

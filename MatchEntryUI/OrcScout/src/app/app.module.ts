@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PhaseAutoComponent } from './phase-auto/phase-auto.component';
 
 import { MatFormFieldModule, MatInputModule, MatButtonModule, MatSlideToggleModule, MatSliderModule, 
-  MatSidenavModule, MatToolbarModule, MatCardModule, MatSelectModule, MatStepperModule, MatListModule } 
+  MatSidenavModule, MatToolbarModule, MatCardModule, MatSelectModule, MatStepperModule, MatListModule, MatRadioModule } 
   from '@angular/material';
   
 import { PhaseTeleopComponent } from './phase-teleop/phase-teleop.component';
@@ -48,7 +48,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatCardModule,
     MatSelectModule,
     MatStepperModule,
-    MatListModule
+    MatListModule,
+    MatRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

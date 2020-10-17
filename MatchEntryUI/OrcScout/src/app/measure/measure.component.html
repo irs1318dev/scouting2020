@@ -1,13 +1,14 @@
 <div  *ngIf="measure">
     <div *ngIf="measure.type === 'ENUM'">
-        <mat-form-field>
-            <mat-label>{{measure.display_name}} </mat-label>
-            <mat-select [(ngModel)]="measure.capability" >
-                <mat-option color="primary" *ngFor="let option of options" [value]="option.name">
-                    {{option.name}} 
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="button-header">{{measure.display_name}}</div>
+        <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"
+            [(ngModel)]="measure.capability">
+            <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option.name">
+                {{option.name}} 
+            </mat-radio-button>
+        </mat-radio-group>
     </div>
     <div *ngIf="measure.type === 'SCORE'">
         <div class="button-header">{{measure.display_name}} {{measure.successes}}/{{measure.attempts}}</div>

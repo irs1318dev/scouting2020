@@ -1,4 +1,8 @@
 <mat-form-field>
+    <mat-label>Match </mat-label>     
+    <input disabled=false matInput [disabled]="matchStarted" [(ngModel)]="matchScoreCard.match.name" (blur)="getRedVBlue()" >
+</mat-form-field>
+<mat-form-field>
     <mat-label>Station </mat-label>
     <mat-select [disabled]="matchStarted" [(ngModel)]="matchScoreCard.selectedTeam.station" (selectionChange)="getAllianceName()" >
         <mat-option *ngFor="let station of stations" [value]="station.value">
