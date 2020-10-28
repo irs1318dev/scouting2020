@@ -1,68 +1,72 @@
-import { Component, OnInit, HostListener, SimpleChanges } from '@angular/core';
-import { Measure, MatchScoreCard, Team } from '../match';
+import { Component, OnInit, HostListener, SimpleChanges } from "@angular/core";
+import { Measure, MatchScoreCard, Team } from "../match";
 import { alliances } from "../domain-tables/alliances";
-import { HeroService } from '../hero.service';
-import { EnumOption, DOMAINOPTIONS } from '../enum-lookups';
-import { stations } from '../domain-tables/stations';
-import { RedVBlue } from '../models/redVblue';
-import { MatchService } from '../match.service';
+import { HeroService } from "../hero.service";
+import { EnumOption, DOMAINOPTIONS } from "../enum-lookups";
+import { stations } from "../domain-tables/stations";
+import { RedVBlue } from "../models/redVblue";
+import { MatchService } from "../match.service";
 
 @Component({
-  selector: 'app-match-score-card',
+  selector: "app-match-score-card",
   host: {
-    class:'fuller-page',
-    style: 'width:100%'
+    class: "fuller-page",
+    style: "width:100%",
   },
-  templateUrl: './match-score-card.component.html',
-  styleUrls: ['./match-score-card.component.less']
+  templateUrl: "./match-score-card.component.html",
+  styleUrls: ["./match-score-card.component.less"],
 })
-
 export class MatchScoreCardComponent implements OnInit {
   matchStarted: boolean;
   redVBlue: RedVBlue;
   stations: EnumOption[];
   alliances: EnumOption[];
   matchScoreCard: MatchScoreCard;
-  constructor(private heroService: HeroService, private matchService: MatchService) { }
+  constructor(
+    private heroService: HeroService,
+    private matchService: MatchService
+  ) {}
 
-  add(): void{
-      console.log("in add");
-      // add method not implemented yet. 
-      //this.heroService.saveMeasures();
+  add(): void {
+    console.log("in add");
+    // add method not implemented yet.
+    //this.heroService.saveMeasures();
   }
-  
-  @HostListener('window:beforeunload', ['$event']) 
-  unloadNotification($event: any) {    
-    this.heroService.saveMeasures();
+
+  @HostListener("window:beforeunload", ["$event"])
+  unloadNotification($event: any) {
+    this.heroService.saveMeasures(this.matchScoreCard);
   }
-  
+
   ngOnInit() {
     this.matchStarted = false;
-    this.stations = DOMAINOPTIONS['stations'];
-    this.alliances = DOMAINOPTIONS['alliances'];
+    this.stations = DOMAINOPTIONS["stations"];
+    this.alliances = DOMAINOPTIONS["alliances"];
     this.matchScoreCard = new MatchScoreCard();
     this.matchScoreCard.selectedTeam = new Team();
-    this.matchScoreCard.selectedTeam.alliance = alliances.na; 
-    this.matchScoreCard.selectedTeam.station = stations.na; 
+    this.matchScoreCard.selectedTeam.alliance = alliances.na;
+    this.matchScoreCard.selectedTeam.station = stations.na;
     this.getRedVBlue();
     this.getMeasures();
-    this. getAllianceName();
+    this.getAllianceName();
   }
-  
+
   getAllianceName(): void {
-    if (this.matchScoreCard.selectedTeam.alliance === alliances.na || this.matchScoreCard.selectedTeam.station === stations.na)
-    {
-      this.matchScoreCard.selectedTeam.name = '';
-    }
-    else if (this.matchScoreCard.selectedTeam.alliance === alliances.red)
-    {
-      let team = this.redVBlue.red.find(c => c.station == this.matchScoreCard.selectedTeam.station);
-      this.matchScoreCard.selectedTeam.name =team.team;
+    if (
+      this.matchScoreCard.selectedTeam.alliance === alliances.na ||
+      this.matchScoreCard.selectedTeam.station === stations.na
+    ) {
+      this.matchScoreCard.selectedTeam.name = "";
+    } else if (this.matchScoreCard.selectedTeam.alliance === alliances.red) {
+      let team = this.redVBlue.red.find(
+        (c) => c.station == this.matchScoreCard.selectedTeam.station
+      );
+      this.matchScoreCard.selectedTeam.name = team.team;
       this.matchScoreCard.match.name = team.match;
-    }
-    else if (this.matchScoreCard.selectedTeam.alliance === alliances.blue)
-    {
-      let team = this.redVBlue.blue.find(c => c.station == this.matchScoreCard.selectedTeam.station);
+    } else if (this.matchScoreCard.selectedTeam.alliance === alliances.blue) {
+      let team = this.redVBlue.blue.find(
+        (c) => c.station == this.matchScoreCard.selectedTeam.station
+      );
       this.matchScoreCard.selectedTeam.name = team.team;
       this.matchScoreCard.match.name = team.match;
     }
@@ -70,30 +74,43 @@ export class MatchScoreCardComponent implements OnInit {
 
   getRedVBlue(): void {
     let matchName = "";
-    if (this.matchScoreCard && this.matchScoreCard.match && this.matchScoreCard.match.name) {
+    if (
+      this.matchScoreCard &&
+      this.matchScoreCard.match &&
+      this.matchScoreCard.match.name
+    ) {
       matchName = this.matchScoreCard.match.name;
     }
-    
-    this.matchService.getMatch(matchName)
-        .subscribe(redVBlue => this.redVBlue= redVBlue);
+
+    this.matchService
+      .getMatch(matchName)
+      .subscribe((redVBlue) => (this.redVBlue = redVBlue));
     this.matchScoreCard.selectedTeam.station = stations.na;
     this.matchScoreCard.selectedTeam.alliance = alliances.na;
   }
 
   getMeasures(): void {
-    this.heroService.getBlankMeasures()
-        .subscribe(measures => this.matchScoreCard.score = measures);
+    this.heroService
+      .getBlankMeasures(this.matchScoreCard)
+      .subscribe((measures) => (this.matchScoreCard.score = measures));
   }
 
-  retreiveMeasures(): void {    
+  retreiveMeasures(): void {
     this.matchStarted = true;
-    this.heroService.startMatch(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name)
-    .subscribe(measures => this.matchScoreCard.score = measures);
+    this.heroService
+      .startMatch(
+        this.matchScoreCard.selectedTeam.name,
+        this.matchScoreCard.match.name
+      )
+      .subscribe((measures) => (this.matchScoreCard.score = measures));
   }
 
-  sendMeasures(): void {    
+  sendMeasures(): void {
     this.matchStarted = false;
-    this.heroService.postScore(this.matchScoreCard.selectedTeam.name, this.matchScoreCard.match.name)
-    // WIP, does not yet  measures.  
+    this.heroService.postScore(
+      this.matchScoreCard.selectedTeam.name,
+      this.matchScoreCard.match.name
+    );
+    // WIP, does not yet  measures.
   }
 }
