@@ -87,6 +87,7 @@ export class MatchScoreCardComponent implements OnInit {
       .subscribe((redVBlue) => (this.redVBlue = redVBlue));
     this.matchScoreCard.selectedTeam.station = stations.na;
     this.matchScoreCard.selectedTeam.alliance = alliances.na;
+    this.matchScoreCard.selectedTeam.name = "";
   }
 
   getMeasures(): void {
@@ -97,6 +98,7 @@ export class MatchScoreCardComponent implements OnInit {
 
   retreiveMeasures(): void {
     this.matchStarted = true;
+    this.matchScoreCard.score = null;
     this.heroService
       .startMatch(
         this.matchScoreCard.selectedTeam.name,

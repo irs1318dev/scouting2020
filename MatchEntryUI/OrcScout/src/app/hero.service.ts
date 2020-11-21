@@ -83,6 +83,10 @@ export class HeroService {
   }
 
   private populateMeasures(matchScoreCard: MatchScoreCard) {
+    if (matchScoreCard.match.name === "" || matchScoreCard.selectedTeam.name === "") {
+      this.measures = MEASURES;
+      return;
+    }
     if (this.measures == null || this.measures == undefined) {
       if (localStorage.getItem(this.getMatchKey(matchScoreCard))) {
         this.measures = JSON.parse(
@@ -91,7 +95,9 @@ export class HeroService {
       } else {
         this.measures = MEASURES;
       }
-    }
+    } else {
+        this.measures = MEASURES;
+      }
   }
 
   public startMatch(team: string, match: string): Observable<Measure[]> {
