@@ -231,7 +231,7 @@ class Scouting(object):
     @cherrypy.expose
     def eventfind(self, event, year):
         self.eventDal.set_current_event(event, year)
-        self.eventDal.set_current_match('001-q')
+        self.eventDal.set_current_match('1')
         server.model.schedule.insert_sched(event, year, 'qual')
         return open(s_config.web_sites("reset.html")).read()
 

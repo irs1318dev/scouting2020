@@ -28,10 +28,10 @@ class EventDal(object):
     def list_matches(event, season):
         event_id = EventDal.get_event_id(event, season)
         matches = []
-        sql = text("SELECT distinct(schedules.match), events.name AS event "
+        sql = text("SELECT distinct(schedules.match_num), events.name AS event "
                    "FROM schedules INNER JOIN events "
                    "ON schedules.event_id = events.id "
-                   "WHERE schedules.event_id = :evt_id ORDER BY match ")
+                   "WHERE schedules.event_id = :evt_id ORDER BY match_num")
         conn = engine.connect()
         results = conn.execute(sql, evt_id=event_id)
         conn.close()
@@ -53,30 +53,30 @@ class EventDal(object):
         event_id = EventDal.get_event_id(event, season)
         match_details = {}
         sql = text("SELECT * FROM schedules WHERE "
-                   "match = :match "
+                   "match_num = :match "
                    " AND team = :team "
                    " AND event_id = :evt_id ")
         conn = engine.connect()
-        results = conn.execute(sql, evt_id=event_id, match=match, team=team)
+        results = conn.execute(sql, evt_id=event_id, match_num=match, team=team)
         conn.close()
         for row in results:
             match_details = dict(row)
         if match_details == {}:
-            match_details = {'alliance': 'na', 'level': 'na', 'event': event,
+            match_details = {'alliance': 'na', 'event': event,
                              'station': 'na', 'team': team, 'date': 'na',
-                             'match': match}
+                             'match_num': match}
         return match_details
 
     @staticmethod
     def match_details_station(event, match, alliance, station):
         match_details = {}
         sql = text("SELECT * FROM schedules WHERE "
-                   "match = :match "
+                   "match_num = :match "
                    " AND event = :event "
                    " AND alliance = :alliance "
                    " AND station = :station ")
         conn = engine.connect()
-        results = conn.execute(sql, event=event, match=match, station=station, alliance=alliance)
+        results = conn.execute(sql, event=event, match_num=match, station=station, alliance=alliance)
         conn.close()
         for row in results:
             match_details = dict(row)
@@ -111,7 +111,7 @@ class EventDal(object):
                            "WHERE id = :id;")
             conn.execute(sql_upd, evt_id=event_id, id=results[0]['id'])
         elif len(results) == 0:
-            default_match = "001-q"
+            default_match = 1
             sql_ins = text("INSERT INTO status (event_id, match) "
                            "VALUES (:evt_id, :match);")
             conn.execute(sql_ins, evt_id=event_id, match=default_match)
@@ -162,7 +162,7 @@ class EventDal(object):
         if match == 'na':
             return
 
-        # match is in format 001-q
+        # match is in format 1
         result = match.split('-')
         nextMatchNumber = int(result[0]) + 1
         nextMatch = "{0:0>3}-q".format(nextMatchNumber)
@@ -184,9 +184,9 @@ class EventDal(object):
         match = conn.execute("SELECT match FROM status;").scalar()
         conn.close()
         if match is None:
-            match = "001-q"
+            match = 1
             EventDal.set_current_match(match)
-        return match
+        return str(match)
 
 
     @staticmethod
@@ -194,11 +194,11 @@ class EventDal(object):
         event_id = EventDal.get_event_id(event, season)
         match_details = {}
         sql = text("SELECT * FROM schedules WHERE "
-                   "match = :match "
+                   "match_num = :match "
                    " AND event_id = :evt_id ")
 
         conn = engine.connect()
-        results = conn.execute(sql, evt_id=event_id, match=match)
+        results = conn.execute(sql, evt_id=event_id, match_num=match)
         conn.close()
         for row in results:
             match_details = dict(row)
@@ -209,9 +209,9 @@ class EventDal(object):
     def get_previous_match():
         match_cur = int(EventDal.get_current_match()[0:3])
         if match_cur == 1:
-            return '001-q'
+            return 1
         else:
-            return '{:03}-q'.format(match_cur-1)
+            return match_cur - 1
 
     @staticmethod
     def last_match_teams():
@@ -219,7 +219,7 @@ class EventDal(object):
         match_prev = EventDal.get_previous_match()
 
         sql = '''SELECT team FROM schedules WHERE
-                   match = %s
+                   match_num = %s
                    AND event_id = %s;'''
 
         conn = pool.getconn()
@@ -263,7 +263,7 @@ class EventDal(object):
         sql = '''
               SELECT schedules.match FROM schedules
               INNER JOIN status ON schedules.event_id = status.event_id WHERE team = %s
-              ORDER BY schedules.match;'''
+              ORDER BY schedules.match_num;'''
         conn = pool.getconn()
         curr = conn.cursor()
         curr.execute(sql, [team])

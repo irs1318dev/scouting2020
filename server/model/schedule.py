@@ -80,7 +80,7 @@ def process_sched(event, season, sched_json, level='qual'):
             conn.close()
             # smu.upsert("events", "name", event)
             smu.upsert("teams", "name", team)
-            smu.upsert("dates", "name", date)
+            # smu.upsert("dates", "name", date)
 
     # set_teams()
     url = (f"https://frc-api.firstinspires.org/v2.0/{season}"
@@ -100,6 +100,7 @@ def process_sched(event, season, sched_json, level='qual'):
         pass
     conn.close()
 
+#
 # Function only works if the csv has columns in the order of match, red1, red2, red3, blue1, blue2, blue3
 def manual_Entry(file, event, season):
     data = pandas.read_csv(file)

@@ -15,14 +15,17 @@ class Match(Base):
     __tablename__ = "matches"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    match_num = Column(Integer, unique=True)
+
+    #name column may end up being deleted:
+    name = Column(String, unique=True, nullable=True)
 
 
-class Level(Base):
-    __tablename__ = "levels"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+# class Level(Base):
+#     __tablename__ = "levels"
+#
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String, unique=True, nullable=False)
 
 
 class Station(Base):

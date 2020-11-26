@@ -59,7 +59,7 @@ class Viewer:
 
     @cherrypy.expose
     def teamplan(self, team='1318'):
-        match = '001-q'
+        match = '1'
         matches = list()
 
         while '""' not in server.model.match.MatchDal.match_teams(match) and '130' not in match:
