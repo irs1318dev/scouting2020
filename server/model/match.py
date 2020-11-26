@@ -26,10 +26,12 @@ class MatchDal(object):
         """Retrieves teams assigned to match passed in `match` argument.
 
         Args:
-            match: (str) Match number formatted as "nnn-p|q" (the
-            vertical bar means either 'p' or 'q' is acceptable). For
-            example, 001-q, 034-q, 103-q, or 003-p. "q" denotes a
-            qualificaiton match and "p" denotes a playoff match.
+            match numbers: (int)
+
+            -Qualifying: 1-400
+            -Quarter Finals: 401-500
+            -Semi-Finals: 501-600
+            -Finals: 601-700
 
         Returns:
             JSON string in following format:
@@ -69,7 +71,7 @@ class MatchDal(object):
 
     @staticmethod
     def pit_teams():
-        """Returns JSON list of teams sheduled to compete.
+        """Returns JSON list of teams scheduled to compete.
 
         Returns: (str) JSON string with following format:
         {"match":"na", "teams":["nnnn", "nnnn", ...,  "na"]}
@@ -102,7 +104,7 @@ class MatchDal(object):
         `server.model.event.EventDal.set_current_event("event_code").
 
         Args:
-            match: (str) Match number, e.g., "034-q" or "002-p"
+            match: (int) Match number, e.g., look above"
             team: (str) FRC team number, e.g., 1318 or 360.
 
         Returns: Several JSON strings combined into a single string,
@@ -168,7 +170,7 @@ class MatchDal(object):
         Args:
             team: (str) FRC team number
             task: (str) Name of task
-            match: (str) Match number in nnn-p|q format
+            match: (int) Match number (*look above)
             phase: (str) Name of phase
             capability: (int) 1 if has capability, 0 if not
             attempt_count: (int) Number of attempts, successful or not
@@ -204,36 +206,30 @@ class MatchDal(object):
 
         sql = text(
             "INSERT INTO measures "
-            "(date_id, event_id, level_id, match_id, alliance_id, "
+            "(date, event_id, match_id, alliance_id, "
             "team_id, station_id, actor_id, task_id, measuretype_id, "
-            "phase_id, attempt_id, reason_id, capability, attempts, "
-            "successes, cycle_times) "
+            "phase_id, attempt_id, reason_id, successes) "
             
             "VALUES("
-            ":date_id, :event_id, :level_id, :match_id, :alliance_id, "
+            ":date_id, :event_id, :match_id, :alliance_id, "
             ":team_id, :station_id, :actor_id, :task_id, :measuretype_id, "
-            ":phase_id, :attempt_id, :reason_id, :capability, :attempts, "
-            ":successes, :cycle_times) "
+            ":phase_id, :attempt_id, :reason_id, :successes) "
             
             "ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=:attempts, "
-            "successes=:successes, cycle_times=:cycle_times;")
+            "SET successes=:successes;")
+
         conn = engine.connect()
         conn.execute(sql, date_id=date_id, event_id=curr_event[0],
-                     level_id=level_id, match_id=match_id,
-                     alliance_id=alliance_id, team_id=team_id,
-                     station_id=station_id, actor_id=actor_id,
-                     task_id=task_id, measuretype_id=measuretype_id,
-                     phase_id=phase_id, attempt_id=attempt_id,
-                     reason_id=reason_id, capability=capability,
-                     attempts=attempt_count, successes=success_count,
-                     cycle_times=cycle_time)
+                     match_id=match_id, alliance_id=alliance_id,
+                     team_id=team_id, station_id=station_id,
+                     actor_id=actor_id, task_id=task_id,
+                     measuretype_id=measuretype_id, phase_id=phase_id,
+                     attempt_id=attempt_id, reason_id=reason_id,
+                     successes=success_count)
         conn.close()
 
     @staticmethod
-    def insert_alliance_task(alliance, task, phase, match, capability=0,
-                             attempt_count=0, success_count=0,
-                             cycle_time=0):
+    def insert_alliance_task(alliance, task, phase, match, success_count=0):
         """Inserts task for an alliance and match, not linked to team.
 
         Only works if schedule loaded for event.
@@ -242,11 +238,8 @@ class MatchDal(object):
             alliance: (str) "red" or "blue"
             task: (str) Name of task
             phase: (str) Name of phase
-            match: (str) Match number in nnn-p|q format
-            capability: (int) 1 if has capability, 0 if not
-            attempt_count: (int) Number of attempts, successful or not
+            match: (int) Match number (*look above)
             success_count: (int) Number of successes
-            cycle_time: (int) Number of seconds
         """
         curr_event = event.EventDal.get_current_event()
         event_name = curr_event[1]
@@ -273,49 +266,39 @@ class MatchDal(object):
 
         reason_id = sm_dal.reason_ids['na']
 
-        capability, attempt_count, success_count, cycle_time, attempt_id = \
-            MatchDal._transform_measure(measure, capability, attempt_count,
-                                        success_count, cycle_time, task)
+        success_count, attempt_id = \
+            MatchDal._transform_measure(measure, success_count, task)
 
         sql = text(
             "INSERT INTO measures "
-            "(date_id, event_id , level_id, match_id ,alliance_id, team_id, "
+            "(date_id, event_id , match_id ,alliance_id, team_id, "
             "station_id, actor_id, task_id , measuretype_id ,phase_id, "
-            "attempt_id , reason_id, capability, attempts, successes, "
-            "cycle_times) "
+            "attempt_id , reason_id, successes) "
             "VALUES"
-            "(:date_id, :event_id, :level_id, :match_id, :alliance_id, "
+            "(:date_id, :event_id, :match_id, :alliance_id, "
             ":team_id, :station_id, :actor_id, :task_id, :measuretype_id, "
-            ":phase_id, :attempt_id, :reason_id, :capability, :attempts, "
-            ":successes, :cycle_times ) " +
+            ":phase_id, :attempt_id, :reason_id, :successes) " +
             "ON CONFLICT ON CONSTRAINT measures_pkey DO UPDATE "
-            "SET capability=:capability, attempts=:attempts, "
-            "successes=:successes, cycle_times=:cycle_times;")
+            "SET successes=:successes;")
         conn = engine.connect()
         conn.execute(sql,
-                     date_id=date_id, event_id=event_id, level_id=level_id,
+                     date_id=date_id, event_id=event_id,
                      match_id=match_id, alliance_id=alliance_id,
                      team_id=team_id, station_id=station_id,
                      actor_id=actor_id, task_id=task_id,
                      measuretype_id=measuretype_id, phase_id=phase_id,
                      attempt_id=attempt_id, reason_id=reason_id,
-                     capability=capability, attempts=attempt_count,
-                     successes=success_count, cycle_times=cycle_time)
+                     successes=success_count)
         conn.close()
 
 # todo(stacy) Talk to Stuart about this function
     @staticmethod
-    def _transform_measure(data_type, capability, attempt_count, success_count,
-                           cycle_time, task_name):
+    def _transform_measure(data_type, success_count, task_name):
         """
 
         Args:
-            data_type: (str) Either "na", "count", "percentage", "boolean",
-                "enum", "attempt" or "cycletime".
-            capability:
-            attempt_count:
+            data_type: (str) Either "na", "count", "percentage", "boolean", or "enum".
             success_count:
-            cycle_time:
             task_name:
 
         Returns:
@@ -329,32 +312,21 @@ class MatchDal(object):
         if data_type == 'na':
             return 0, 0, 0, 0, attempt_id
         elif data_type == 'count':
-            return 0, attempt_count, success_count, 0, attempt_id
+            return 0, success_count, 0, attempt_id
         elif data_type == 'percentage':
-            if capability == '':
-                return 0, 0, 0, 0, attempt_id
-            if (int)(capability) < 0:
-                capability = '0'
-                return 0, 0, 0, capability, attempt_id
-            if (int)(capability) > 100:
-                capability = '100'
-                return 0, 0, 0, capability, attempt_id
-            return 0, 0, 0, capability, attempt_id
+            return 0, 0, 0, attempt_id
         elif data_type == 'boolean':
-            return 0, attempt_count, success_count, 0, attempt_id
+            return 0, success_count, 0, attempt_id
         elif data_type == 'enum':
-            if capability == '':
-                option_id = 0
-            else:
-                task_option = '{}-{}'.format(task_name, capability)
-                option_id = sm_dal.task_option_ids[task_option]
+            task_option = '{}-{}'.format(task_name)
+            option_id = sm_dal.task_option_ids[task_option]
             return option_id, 0, 0, 0, attempt_id
         elif data_type == 'attempt':
             return 0
         elif data_type == 'cycletime':
             return 0
         elif data_type == 'rating':
-            return 0, attempt_count, success_count, 0, attempt_id
+            return 0, success_count, 0, attempt_id
 
 
 # todo(Stacy) This could easily be replaced with Python dictionary

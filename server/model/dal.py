@@ -56,7 +56,7 @@ task_option_options = {key: re.sub(r"^[^-]+-", "", val, count=1)
 
 def rebuild_dicts():
     global date_names, date_ids, event_names, event_ids
-    global level_names, level_ids, match_names, match_ids
+    global match_names, match_ids
     global alliance_names, alliance_ids, team_names, team_ids
     global station_names, station_ids, actor_names, actor_ids
     global task_names, task_ids, measuretype_names, measuretype_ids
