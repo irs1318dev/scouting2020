@@ -4,7 +4,9 @@
  application loads data from a Python pickle file and displays scouting
  data as charts and tables. It does not do  anything else, such as
  accept connections from tablets or write data to the SQL database.
- The pickle file must be named vif.pickle.
+ 
+ The first argument must be the name of the pickle file. The pickle
+ file must be in the same folder as this shell script.
 
  The Python pickle file must have been created by the Vis application.
 
@@ -15,4 +17,4 @@
  This *.ps1 file is a Windows PowerShell scripting file that will only
  work on Windows. For Apple or Linux computers, use a shell script.
 #>
-python -m bokeh serve --dev --show viewer_app --args vif.pickle
+python -m bokeh serve --dev --show viewer_app --args $args[0]

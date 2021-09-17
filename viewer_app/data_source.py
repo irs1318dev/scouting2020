@@ -54,22 +54,21 @@ class DataSource:
                 or the scouting database.
             write_file(): Write the scouting data to a Python pickle file.
     """
-    def __init__(self, sql=False, fname=None, event=None, season=None):
+    def __init__(self, sql=False, fname="vif.pickle"):
         """Initializes a DataSource object."""
         self.measures = None
         self.enum_measures = None
         self.schedule = None
         self.teams = None
         self.status = None
-        self.event = event
-        self.season = season
+        self.event = None
+        self.season = None
         self.fname = fname
-        self.from_sql = False
+        self.from_sql = sql
         self.enum_tasks = None
 
-        if self.fname is not None:
-            self._load_from_file()
-        else:
+
+        if self.from_sql:
             # Import non-viewer_app modules only if loading from SQL
             #   Allows viewer_app to be run as a standalone application
             #   without the rest of the server files.
@@ -81,6 +80,8 @@ class DataSource:
 
             self.from_sql = True
             self._load_from_sql()
+        else:
+            self._load_from_file()
 
     def _load_from_file(self):
         """Loads data from a Python pickle file."""
@@ -97,8 +98,13 @@ class DataSource:
 
     def _load_from_sql(self):
         """Connects to the scouting database and creates DataFrames."""
-        if self.event is not None and self.season is not None:
-            sme.EventDal.set_current_event(self.event, self.season)
+        # Having viewer App change system-level event was a bad idea.
+        # if self.event is not None and self.season is not None:
+        #     sme.EventDal.set_current_event(self.event, self.season)
+        # Instead, app will always connect to system's current event.
+        #   If user wants data for a different event, change current
+        #   event in system.
+        _, self.event, self.season = sme.EventDal.get_current_event()
 
         # Load measures data
         conn = smc.pool.getconn()
@@ -135,20 +141,14 @@ class DataSource:
         self.enum_tasks = list(enum_tasks)
 
         # generate pickle file to clients that don't have sql
-        self.write_file(fname='vif.pickle')
+        self.write_file(self.fname)
 
         # Return connection to pool.
         smc.pool.putconn(conn)
 
-    def refresh(self, fname=None):
+    def refresh(self):
         """Refreshes data by reconnecting to the database or to a file.
-
-        Args:
-            fname: A Python style filename or path. fname must work with
-                Python's built-in open() function.
         """
-        if fname is not None:
-            self.fname = fname
         if self.from_sql:
             self._load_from_sql()
         else:

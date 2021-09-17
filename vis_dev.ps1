@@ -13,4 +13,4 @@
  \This *.ps1 file is a Windows PowerShell scripting file that will only
  work on Windows. For Apple or Linux computers, use a shell script.
 #>
-python -m bokeh serve --dev --show viewer_app --args sql
+bokeh serve --show viewer_app --args sql $args[0]

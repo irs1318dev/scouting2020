@@ -15,22 +15,34 @@ class DataFile:
     def callback_button(self):
         # ds1 = va_data_source.DataSource(event='test_event_2', season='2020')
         # check boolean attribute in data_source to see whether it's from a file or sql
-        if not self.data_source.from_sql:
-            bokeh.io.output_file('file_input.html')
+        # if not self.data_source.from_sql:
+        #     # bokeh.io.output_file('file_input.html')
+        #     print("PRESSED THE FILE INPUT BUTTON!")
+        #     file_input = bk_widgets.FileInput()
+        #     print("ABOUT TO DISPLAY FILE INPUT DIALOG")
+        #     bokeh.io.show(file_input)
+        #     print("FILE SELECTED:", file_input.filename)
+        #     # self.data_source.refresh(fname=file_input.filename)
 
-            file_input = bk_widgets.FileInput()
-            bokeh.io.show(file_input)
-            self.data_source.refresh(fname=file_input.filename)
-
-        else:
-            self.data_source.refresh()
-        # for obj in self.data_source:
-        #     obj = ds1
+        # else:
+        #     self.data_source.refresh()
+        # # for obj in self.data_source:
+        # #     obj = ds1
+        self.data_source.refresh()
 
     def layout_file_management(self):
+
         btn = bk_widgets.Button(label='Update graphs')
         btn.on_click(self.callback_button)
-        self.layout = bk_layouts.row(btn)
+        # self.layout = bk_layouts.row(btn)
+
+        col_layout = bk_layouts.Column(
+            # bk_layouts.row(btn),
+            btn,
+            bk_models.Div(
+                text=f'<h2>Data File: {self.data_source.fname}')
+        )
+        self.layout = col_layout
         return self.layout
 
     def panel_file_management(self):
@@ -38,4 +50,4 @@ class DataFile:
         self.layout_file_management()
             # list_objects)
         return bk_models.Panel(child=self.layout,
-                               title='File Management')
+                               title='Data Management')

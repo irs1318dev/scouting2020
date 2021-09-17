@@ -11,4 +11,4 @@
  This *.ps1 file is a Windows PowerShell scripting file that will only
  work on Windows. For Apple or Linux computers, use a shell script.
 #>
-bokeh serve --show viewer_app --args data.pickle
+bokeh serve --show viewer_app --args $args[0]
