@@ -9,5 +9,4 @@
 This *.ps1 file is a Windows PowerShell scripting file that will only
  work on Windows. For Apple or Linux computers, use a shell script.
 #>
-write-host $args
 bokeh serve --show viewer_app --args sql $args[0]

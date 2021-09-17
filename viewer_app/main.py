@@ -25,8 +25,8 @@ panels = []
 file_manager = va_fm.DataFile(data_source)
 panels.append(file_manager.panel_file_management())
 
-# sixteam = va_sixteam.SixTeam(data_source)
-# panels.append(sixteam.panel('001-q'))
+sixteam = va_sixteam.SixTeam(data_source)
+panels.append(sixteam.panel('001-q'))
 
 oneteam_tasks = ['launchOuter', 'climbPosition']
 oneteam = va_oneteam.OneTeam(data_source)

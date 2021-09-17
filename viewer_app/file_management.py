@@ -8,7 +8,7 @@ import bokeh.io
 class DataFile:
 
     def __init__(self, data_source):
-        self.update_button = bk_widgets.Button(label='Update graphs')
+        # self.update_button = bk_widgets.Button(label='Update graphs')
         self.layout = None
         self.data_source = data_source
 
